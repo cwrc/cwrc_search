@@ -1,0 +1,319 @@
+<?php
+/**
+ * @file
+ * Code for the cwrc_search feature.
+ */
+
+include_once 'cwrc_search.features.inc';
+
+/**
+ * Implements hook_menu().
+ */
+function cwrc_search_menu() {
+  $items = array();
+
+  // Defines an advanced Islandora search page.
+  $items['cwrc_search'] = array(
+    'title' => 'Advanced search',
+    'page callback' => '_cwrc_search_adv_search',
+    'access arguments' => array('search islandora solr'),
+  );
+
+  // Defines the tag-aware search page.
+  $items['cwrc_search_tag_aware'] = array(
+    'title' => 'Tag-aware search',
+    'page callback' => '_cwrc_search_tag_aware_search',
+    'access arguments' => array('search islandora solr'),
+  );
+
+  return $items;
+}
+
+/**
+ * Implements hook_theme().
+ *
+ * Adds new templates and theme hooks for CWRC-specific search displays.
+ */
+function cwrc_search_theme($existing, $type, $theme, $path) {
+  return array(
+    // Generic wrapper around search results.
+    'cwrc_search_results_wrapper' => array(
+      'template' => 'templates/cwrc-search-results-wrapper',
+      'variables' => array(
+        'results' => array(),
+        'pager' => null,
+        'summary' => null,
+        'secondary' => null,
+        'layouts' => null,
+        'sort_options' => null,
+      ),
+      'file' => 'includes/cwrc_search.theme.inc',
+    ),
+
+    // Plotit wrapper template.
+    'cwrc_search_results_visualization_wrapper' => array(
+      'template' => 'templates/cwrc-search-results-visualization-wrapper',
+      'variables' => array('embed_url' => null),
+      'file' => 'includes/cwrc_search.theme.inc',
+    ),
+
+    // Generic "results summary" template.
+    'cwrc_search_results_summary' => array(
+      'template' => 'templates/cwrc-search-results-summary',
+      'variables' => array('total' => null, 'start' => null, 'end' => null),
+      'file' => 'includes/cwrc_search.theme.inc',
+    ),
+
+    // Individual "name" in "list of names".
+    'cwrc_search_list_name' => array(
+      'template' => 'templates/cwrc-search-list-name',
+      'variables' => array('name' => null, 'url' => null, 'object' => null),
+      'file' => 'includes/cwrc_search.theme.inc',
+    ),
+
+    // Layout selector.
+    'cwrc_search_layouts_select' => array(
+      'template' => 'templates/cwrc-search-layouts-select',
+      'variables' => array('layouts' => array()),
+    ),
+  );
+}
+
+/**
+ * Implementation of hook_preprocess_islandora_solr_facet().
+ */
+function cwrc_search_preprocess_islandora_solr_facet(&$variables) {
+  // Add a theme hook suggestion just for good measure.
+  $variables['theme_hook_suggestions'][] = $variables['theme_hook_original'] . '__' . $variables['pid'];
+}
+
+/**
+ * Implements hook_islandora_solr_query_blocks().
+ *
+ * Adds CWRC versions of several search blocks so that we can tweak/modify them
+ * without breaking Islandora core.
+ */
+function cwrc_search_islandora_solr_query_blocks() {
+  return array(
+    // "Current query" block for displaying enabled filters.
+    'cwrc_current_query' => array(
+      'name' => t('CWRC Islandora query'),
+      'module' => 'cwrc_search',
+      'file' => 'includes/classes/CwrcSolrResults.php',
+      'class' => 'CwrcSolrResults',
+      'function' => 'currentQuery',
+      'form' => NULL,
+    ),
+
+    // "Facets" block that displays all available facets.
+    'cwrc_basic_facets' => array(
+      'name' => t('CWRC Islandora facets'),
+      'module' => 'cwrc_search',
+      'file' => 'includes/classes/CwrcSolrResults.php',
+      'class' => 'CwrcSolrResults',
+      'function' => 'displayFacets',
+      'form' => NULL,
+    ),
+
+    // "Display switch" block that shows tabs for alternate displays.
+    'cwrc_display_switch' => array(
+      'name' => t('CWRC Islandora displays'),
+      'module' => 'cwrc_search',
+      'file' => 'includes/cwrc_search.blocks.inc',
+      'class' => NULL,
+      'function' => 'cwrc_search_solr_display_tabs',
+      'form' => NULL,
+    ),
+  );
+}
+
+/**
+ * Implements hook_islandora_solr_primary_display().
+ *
+ * Defines our search displays.
+ *
+ * The classes used below all extend CwrcSolrResults which, in turn, extends
+ * IslandoraSolrResults.  The aim is to modify the behaviour as little as
+ * possible, however we are using different theme hooks and some other globals
+ * that facilitated having a generic "parent" class.
+ */
+function cwrc_search_islandora_solr_primary_display() {
+  $displays = array(
+    // "All Results" view (smorgasboard).
+    'cwrc_search_all' => array(
+      'name' => t('All Results'),
+      'module' => 'cwrc_search',
+      'file' => 'includes/classes/CwrcSolrResultsAll.php',
+      'class' => 'CwrcSolrResultsAll',
+      'function' => 'displayResults',
+      'description' => t('Display all results in a list or grid.'),
+    ),
+
+    // "List of names" display.
+    'cwrc_search_list_names' => array(
+      'name' => t('List of Names'),
+      'module' => 'cwrc_search',
+      'file' => 'includes/classes/CwrcSolrResultsListNames.php',
+      'class' => 'CwrcSolrResultsListNames',
+      'function' => 'displayResults',
+      'description' => t('Show only "people" in the CWRC collaboratory as a list of names.'),
+    ),
+
+    // "Bibliographic view" display.
+    'cwrc_search_bibliographic_view' => array(
+      'name' => t('Bibliographic View'),
+      'module' => 'cwrc_search',
+      'file' => 'includes/classes/CwrcSolrResultsBibliographicView.php',
+      'class' => 'CwrcSolrResultsBibliographicView',
+      'function' => 'displayResults',
+      'description' => t('Display bibliographic entries for results.'),
+    ),
+
+    // "Documents" display.
+    'cwrc_search_documents' => array(
+      'name' => t('Documents'),
+      'module' => 'cwrc_search',
+      'file' => 'includes/classes/CwrcSolrResultsDocuments.php',
+      'class' => 'CwrcSolrResultsDocuments',
+      'function' => 'displayResults',
+      'description' => t('Display only documents in the CWRC collaboratory.'),
+    ),
+  );
+
+  // Add visualization tool search displays.
+  foreach (cwrc_visualization_info_tools() as $name => $tool) {
+    if (isset($tool['search display'])) {
+      $displays['cwrc_search_' . $name] = array(
+        'name' => $tool['label'],
+        'module' => 'cwrc_search',
+        'file' => 'includes/classes/CwrcSolrResultsVisualization.php',
+        'class' => 'CwrcSolrResultsVisualization',
+        'function' => 'displayResults',
+        'description' => t('Display @label results.', array('@label' => $tool['label'])),
+        'original_display' => $tool['search display'],
+        'hide_facets' => $tool['search hide facets'],
+      );
+    }
+  }
+
+  return $displays;
+}
+
+/**
+ * Implements hook_islandora_solr_query().
+ *
+ * Limits results for our displays, this cannot be done in the result display
+ * classes so we must override it here.
+ */
+function cwrc_search_islandora_solr_query($solr) {
+  $filter_query = '';
+
+  // Limit "list of names" to people cmodels.
+  if ($solr->display == 'cwrc_search_list_names') {
+    $filter_query = 'RELS_EXT_hasModel_uri_ms:"info:fedora/cwrc:person-entityCModel" OR RELS_EXT_hasModel_uri_ms:"info:fedora/islandora:personCModel"';
+
+  // Limit "documents" to document cmodels.
+  } else if ($solr->display == 'cwrc_search_documents') {
+    $filter_query = 'RELS_EXT_hasModel_uri_ms:"info:fedora/cwrc:documentCModel"';
+
+  // Limit "events" to event cmodels.
+  } else if ($solr->display == 'cwrc_search_events') {
+    $filter_query = 'RELS_EXT_hasModel_uri_ms:"info:fedora/islandora:eventCModel"';
+
+  // Limit "bibliographic" to objects with a MODS record.
+  } else if ($solr->display == 'cwrc_search_bibliographic_view') {
+    $filter_query = 'fedora_datastreams_ms:"MODS"';
+  }
+
+  // Add the filter query if available.
+  if (!empty($filter_query)) {
+    $solr->solrParams['fq'][] = $filter_query;
+  }
+}
+
+/* Menu callbacks. */
+
+/**
+ * Page callback: Displays an advanced Islandora search page.
+ *
+ * @return array
+ *   A render array for a page containing an advanced Islandora search page.
+ *
+ * @see cwrc_adv_search_page_menu()
+ */
+function _cwrc_search_adv_search() {
+  return quicktabs_build_quicktabs('cwrc_advanced_search', array(), array());
+}
+
+/* Form handlers. */
+
+/**
+ * Form constructor for the tag-aware search form.
+ *
+ * @ingroup forms
+ */
+function _cwrc_search_tag_aware_search() {
+  $form['tag_aware_search_iframe'] = array(
+    '#markup' => '<iframe src="http://echidna.ca/"></iframe>',
+  );
+
+  return $form;
+}
+
+/**
+ * Search form callback.
+ */
+function cwrc_search_sort_form($form, &$form_state) {
+  $sort_fields = islandora_solr_get_fields('sort_fields');
+
+  if (count($sort_fields) == 0) {
+    return array();
+  }
+
+  // get parameters and current sort
+  $params = drupal_get_query_parameters();
+  if (isset($params['sort'])) {
+    $sort_params = explode(' ', $params['sort']);
+    $current_sort_direction = array_pop($sort_params);
+    $current_sort_field = implode(' ', $sort_params);
+  } else {
+    $current_sort_direction = 'desc';
+    $current_sort_field = 'score';
+  }
+
+  $form = array();
+
+  $form['sort_field'] = array(
+    '#type' => 'select',
+    '#options' => $sort_fields,
+    '#default_value' => $current_sort_field,
+    '#title' => t('Sort field'),
+  );
+
+  $form['sort_direction'] = array(
+    '#type' => 'select',
+    '#options' => array(
+      'asc' => t('Ascending'),
+      'desc' => t('Descending'),
+    ),
+    '#default_value' => $current_sort_direction,
+    '#title' => t('Sort direction'),
+  );
+
+  $form['submit'] = array(
+    '#type' => 'submit',
+    '#value' => t('Change'),
+  );
+
+  return $form;
+}
+
+/**
+ * Submit handler for the search sort form, redirects to new search sort page.
+ */
+function cwrc_search_sort_form_submit($form, &$form_state) {
+  $params = drupal_get_query_parameters();
+  $values = $form_state['values'];
+  $params['sort'] = $values['sort_field'] . ' ' . $values['sort_direction'];
+  drupal_goto(current_path(), array('query' => $params));
+}
