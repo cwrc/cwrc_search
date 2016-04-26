@@ -36,7 +36,7 @@ class CwrcSolrResults extends IslandoraSolrResults {
     $end = min(($islandora_solr_query->solrLimit + $start), $total);
     $summary = theme('cwrc_search_results_summary', array(
       'total' => $total,
-      'start' => $start,
+      'start' => ($start + 1),
       'end' => $end,
     ));
 
@@ -146,7 +146,7 @@ class CwrcSolrResults extends IslandoraSolrResults {
     else {
       // Split the filter into field and value.
       $filter_split = preg_split(ISLANDORA_SOLR_QUERY_FIELD_VALUE_SPLIT_REGEX, $filter, 2);
-      $field_name = $filter_split[0];
+      $field_name = ltrim($filter_split[0], "-");
       // Trim brackets.
       $filter_split[1] = trim($filter_split[1], "\"");
       // If value is date.

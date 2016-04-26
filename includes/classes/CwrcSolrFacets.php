@@ -34,10 +34,12 @@ class CwrcSolrFacets extends IslandoraSolrFacets {
     // Only show decade facet when century facet is active.
     if ($this->facet_field == 'cwrc_facet_date_10_ms') {
       $show = false;
-      foreach ($_GET['f'] as $fq) {
-        $pieces = explode(':', $fq);
-        if ($pieces[0] == 'cwrc_facet_date_100_ms') {
-          $show = true;
+      if (isset($_GET['f'])) {
+        foreach ($_GET['f'] as $fq) {
+          $pieces = explode(':', $fq);
+          if ($pieces[0] == 'cwrc_facet_date_100_ms') {
+            $show = true;
+          }
         }
       }
 

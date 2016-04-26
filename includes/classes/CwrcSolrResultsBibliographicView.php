@@ -16,6 +16,7 @@ class CwrcSolrResultsBibliographicView extends CwrcSolrResults {
         'label' => $name,
         'active' => ($layout == $key),
         'url' => url(current_path(), array('query' => array('layout' => $key) + $parameters)),
+        'key' => $key,
       );
     }
 

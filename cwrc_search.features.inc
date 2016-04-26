@@ -25,6 +25,66 @@ function cwrc_search_ctools_plugin_api($module = NULL, $api = NULL) {
 function cwrc_search_islandora_solr_fields_features_default_fields() {
   return array(
   0 => array(
+    'solr_field' => 'PID',
+    'field_type' => 'search_fields',
+    'weight' => -37,
+    'solr_field_settings' => FALSE,
+  ),
+  1 => array(
+    'solr_field' => 'dc.title',
+    'field_type' => 'search_fields',
+    'weight' => -37,
+    'solr_field_settings' => FALSE,
+  ),
+  2 => array(
+    'solr_field' => 'fgs_label_ms',
+    'field_type' => 'search_fields',
+    'weight' => -37,
+    'solr_field_settings' => FALSE,
+  ),
+  3 => array(
+    'solr_field' => 'fgs_ownerId_s',
+    'field_type' => 'search_fields',
+    'weight' => -37,
+    'solr_field_settings' => FALSE,
+  ),
+  4 => array(
+    'solr_field' => 'workflow_date_current_mt',
+    'field_type' => 'search_fields',
+    'weight' => -37,
+    'solr_field_settings' => FALSE,
+  ),
+  5 => array(
+    'solr_field' => 'workflow_userID_current_mt',
+    'field_type' => 'search_fields',
+    'weight' => -37,
+    'solr_field_settings' => FALSE,
+  ),
+  6 => array(
+    'solr_field' => 'workflow_activity_category_current_mt',
+    'field_type' => 'search_fields',
+    'weight' => -37,
+    'solr_field_settings' => FALSE,
+  ),
+  7 => array(
+    'solr_field' => 'workflow_activity_category_superceded_mt',
+    'field_type' => 'search_fields',
+    'weight' => -36,
+    'solr_field_settings' => FALSE,
+  ),
+  8 => array(
+    'solr_field' => 'workflow_activity_stamp_current_mt',
+    'field_type' => 'search_fields',
+    'weight' => -34,
+    'solr_field_settings' => FALSE,
+  ),
+  9 => array(
+    'solr_field' => 'workflow_activity_stamp_superceded_mt',
+    'field_type' => 'search_fields',
+    'weight' => -32,
+    'solr_field_settings' => FALSE,
+  ),
+  10 => array(
     'solr_field' => 'fgs_label_s',
     'field_type' => 'result_fields',
     'weight' => -30,
@@ -63,7 +123,13 @@ function cwrc_search_islandora_solr_fields_features_default_fields() {
       'link_to_search' => FALSE,
     ),
   ),
-  1 => array(
+  11 => array(
+    'solr_field' => 'workflow_activity_status_current_mt',
+    'field_type' => 'search_fields',
+    'weight' => -30,
+    'solr_field_settings' => FALSE,
+  ),
+  12 => array(
     'solr_field' => 'RELS_EXT_isMemberOfCollection_uri_ms',
     'field_type' => 'result_fields',
     'weight' => -29,
@@ -102,7 +168,7 @@ function cwrc_search_islandora_solr_fields_features_default_fields() {
       'link_to_search' => FALSE,
     ),
   ),
-  2 => array(
+  13 => array(
     'solr_field' => 'PID',
     'field_type' => 'result_fields',
     'weight' => -28,
@@ -141,7 +207,13 @@ function cwrc_search_islandora_solr_fields_features_default_fields() {
       'link_to_search' => FALSE,
     ),
   ),
-  3 => array(
+  14 => array(
+    'solr_field' => 'workflow_activity_status_superceded_mt',
+    'field_type' => 'search_fields',
+    'weight' => -28,
+    'solr_field_settings' => FALSE,
+  ),
+  15 => array(
     'solr_field' => 'cwrc_entity_person_preferredForm_et',
     'field_type' => 'result_fields',
     'weight' => -27,
@@ -172,7 +244,7 @@ function cwrc_search_islandora_solr_fields_features_default_fields() {
       'link_to_search' => FALSE,
     ),
   ),
-  4 => array(
+  16 => array(
     'solr_field' => 'cwrc_entity_person_variantForm_et',
     'field_type' => 'result_fields',
     'weight' => -26,
@@ -203,7 +275,13 @@ function cwrc_search_islandora_solr_fields_features_default_fields() {
       'link_to_search' => FALSE,
     ),
   ),
-  5 => array(
+  17 => array(
+    'solr_field' => 'workflow_activity_message_body_current_mt',
+    'field_type' => 'search_fields',
+    'weight' => -26,
+    'solr_field_settings' => FALSE,
+  ),
+  18 => array(
     'solr_field' => 'cwrc_entity_person_birthDate_ms',
     'field_type' => 'result_fields',
     'weight' => -25,
@@ -242,7 +320,7 @@ function cwrc_search_islandora_solr_fields_features_default_fields() {
       'link_to_search' => FALSE,
     ),
   ),
-  6 => array(
+  19 => array(
     'solr_field' => 'cwrc_entity_person_deathDate_ms',
     'field_type' => 'result_fields',
     'weight' => -24,
@@ -281,7 +359,19 @@ function cwrc_search_islandora_solr_fields_features_default_fields() {
       'link_to_search' => FALSE,
     ),
   ),
-  7 => array(
+  20 => array(
+    'solr_field' => 'workflow_activity_message_body_superceded_mt',
+    'field_type' => 'search_fields',
+    'weight' => -24,
+    'solr_field_settings' => FALSE,
+  ),
+  21 => array(
+    'solr_field' => 'RELS_EXT_isMemberOfCollection_uri_ms',
+    'field_type' => 'search_fields',
+    'weight' => -23,
+    'solr_field_settings' => FALSE,
+  ),
+  22 => array(
     'solr_field' => 'cwrc_entity_person_access_condition_ms',
     'field_type' => 'result_fields',
     'weight' => -23,
@@ -312,7 +402,13 @@ function cwrc_search_islandora_solr_fields_features_default_fields() {
       'link_to_search' => FALSE,
     ),
   ),
-  8 => array(
+  23 => array(
+    'solr_field' => 'RELS_EXT_isMemberOfCollection_uri_mt',
+    'field_type' => 'search_fields',
+    'weight' => -22,
+    'solr_field_settings' => FALSE,
+  ),
+  24 => array(
     'solr_field' => 'cwrc_entity_place_access_condition_ms',
     'field_type' => 'result_fields',
     'weight' => -22,
@@ -343,7 +439,7 @@ function cwrc_search_islandora_solr_fields_features_default_fields() {
       'link_to_search' => FALSE,
     ),
   ),
-  9 => array(
+  25 => array(
     'solr_field' => 'cwrc_entity_place_preferredForm_et',
     'field_type' => 'result_fields',
     'weight' => -21,
@@ -362,7 +458,13 @@ function cwrc_search_islandora_solr_fields_features_default_fields() {
       'link_to_search' => FALSE,
     ),
   ),
-  10 => array(
+  26 => array(
+    'solr_field' => 'cwrc_entity_person_preferredForm_et',
+    'field_type' => 'search_fields',
+    'weight' => -21,
+    'solr_field_settings' => FALSE,
+  ),
+  27 => array(
     'solr_field' => 'cwrc_entity_place_variantForm_et',
     'field_type' => 'result_fields',
     'weight' => -20,
@@ -393,7 +495,19 @@ function cwrc_search_islandora_solr_fields_features_default_fields() {
       'link_to_search' => FALSE,
     ),
   ),
-  11 => array(
+  28 => array(
+    'solr_field' => 'cwrc_entity_person_variantForm_et',
+    'field_type' => 'search_fields',
+    'weight' => -20,
+    'solr_field_settings' => FALSE,
+  ),
+  29 => array(
+    'solr_field' => 'cwrc_entity_org_preferredForm_et',
+    'field_type' => 'search_fields',
+    'weight' => -19,
+    'solr_field_settings' => FALSE,
+  ),
+  30 => array(
     'solr_field' => 'cwrc_entity_place_countryName_et',
     'field_type' => 'result_fields',
     'weight' => -19,
@@ -424,7 +538,13 @@ function cwrc_search_islandora_solr_fields_features_default_fields() {
       'link_to_search' => FALSE,
     ),
   ),
-  12 => array(
+  31 => array(
+    'solr_field' => 'cwrc_entity_org_variantForm_et',
+    'field_type' => 'search_fields',
+    'weight' => -18,
+    'solr_field_settings' => FALSE,
+  ),
+  32 => array(
     'solr_field' => 'cwrc_entity_place_featureClass_et',
     'field_type' => 'result_fields',
     'weight' => -18,
@@ -455,7 +575,13 @@ function cwrc_search_islandora_solr_fields_features_default_fields() {
       'link_to_search' => FALSE,
     ),
   ),
-  13 => array(
+  33 => array(
+    'solr_field' => 'cwrc_entity_place_preferredForm_et',
+    'field_type' => 'search_fields',
+    'weight' => -17,
+    'solr_field_settings' => FALSE,
+  ),
+  34 => array(
     'solr_field' => 'cwrc_entity_place_firstAdministrativeDivision_et',
     'field_type' => 'result_fields',
     'weight' => -17,
@@ -486,7 +612,7 @@ function cwrc_search_islandora_solr_fields_features_default_fields() {
       'link_to_search' => FALSE,
     ),
   ),
-  14 => array(
+  35 => array(
     'solr_field' => 'cwrc_entity_place_geoloc_s',
     'field_type' => 'result_fields',
     'weight' => -16,
@@ -517,7 +643,13 @@ function cwrc_search_islandora_solr_fields_features_default_fields() {
       'link_to_search' => FALSE,
     ),
   ),
-  15 => array(
+  36 => array(
+    'solr_field' => 'cwrc_entity_place_variantForm_et',
+    'field_type' => 'search_fields',
+    'weight' => -16,
+    'solr_field_settings' => FALSE,
+  ),
+  37 => array(
     'solr_field' => 'cwrc_entity_org_preferredForm_et',
     'field_type' => 'result_fields',
     'weight' => -15,
@@ -548,7 +680,13 @@ function cwrc_search_islandora_solr_fields_features_default_fields() {
       'link_to_search' => FALSE,
     ),
   ),
-  16 => array(
+  38 => array(
+    'solr_field' => 'cwrc_entity_place_countryName_et',
+    'field_type' => 'search_fields',
+    'weight' => -15,
+    'solr_field_settings' => FALSE,
+  ),
+  39 => array(
     'solr_field' => 'cwrc_entity_org_variantForm_et',
     'field_type' => 'result_fields',
     'weight' => -14,
@@ -579,7 +717,19 @@ function cwrc_search_islandora_solr_fields_features_default_fields() {
       'link_to_search' => FALSE,
     ),
   ),
-  17 => array(
+  40 => array(
+    'solr_field' => 'cwrc_entity_place_firstAdministrativeDivision_et',
+    'field_type' => 'search_fields',
+    'weight' => -14,
+    'solr_field_settings' => FALSE,
+  ),
+  41 => array(
+    'solr_field' => 'cwrc_entity_place_featureClass_et',
+    'field_type' => 'search_fields',
+    'weight' => -13,
+    'solr_field_settings' => FALSE,
+  ),
+  42 => array(
     'solr_field' => 'cwrc_entity_org_access_condition_ms',
     'field_type' => 'result_fields',
     'weight' => -13,
@@ -610,7 +760,7 @@ function cwrc_search_islandora_solr_fields_features_default_fields() {
       'link_to_search' => FALSE,
     ),
   ),
-  18 => array(
+  43 => array(
     'solr_field' => 'cwrc_entity_title_uniformTitle_et',
     'field_type' => 'result_fields',
     'weight' => -12,
@@ -641,7 +791,13 @@ function cwrc_search_islandora_solr_fields_features_default_fields() {
       'link_to_search' => FALSE,
     ),
   ),
-  19 => array(
+  44 => array(
+    'solr_field' => 'cwrc_entity_title_uniformTitle_et',
+    'field_type' => 'search_fields',
+    'weight' => -12,
+    'solr_field_settings' => FALSE,
+  ),
+  45 => array(
     'solr_field' => 'cwrc_entity_title_variantTitle_et',
     'field_type' => 'result_fields',
     'weight' => -11,
@@ -672,7 +828,13 @@ function cwrc_search_islandora_solr_fields_features_default_fields() {
       'link_to_search' => FALSE,
     ),
   ),
-  20 => array(
+  46 => array(
+    'solr_field' => 'cwrc_entity_title_variantTitle_et',
+    'field_type' => 'search_fields',
+    'weight' => -11,
+    'solr_field_settings' => FALSE,
+  ),
+  47 => array(
     'solr_field' => 'score',
     'field_type' => 'sort_fields',
     'weight' => -10,
@@ -713,7 +875,7 @@ function cwrc_search_islandora_solr_fields_features_default_fields() {
       ),
     ),
   ),
-  21 => array(
+  48 => array(
     'solr_field' => 'cwrc_entity_title_author_et',
     'field_type' => 'result_fields',
     'weight' => -10,
@@ -744,7 +906,13 @@ function cwrc_search_islandora_solr_fields_features_default_fields() {
       'link_to_search' => FALSE,
     ),
   ),
-  22 => array(
+  49 => array(
+    'solr_field' => 'cwrc_entity_title_author_et',
+    'field_type' => 'search_fields',
+    'weight' => -10,
+    'solr_field_settings' => FALSE,
+  ),
+  50 => array(
     'solr_field' => 'mods_language_languageTerm_s',
     'field_type' => 'facet_fields',
     'weight' => -10,
@@ -786,7 +954,7 @@ function cwrc_search_islandora_solr_fields_features_default_fields() {
       ),
     ),
   ),
-  23 => array(
+  51 => array(
     'solr_field' => 'fgs_label_s',
     'field_type' => 'sort_fields',
     'weight' => -9,
@@ -827,7 +995,7 @@ function cwrc_search_islandora_solr_fields_features_default_fields() {
       ),
     ),
   ),
-  24 => array(
+  52 => array(
     'solr_field' => 'ancestors_ms',
     'field_type' => 'facet_fields',
     'weight' => -9,
@@ -869,7 +1037,7 @@ function cwrc_search_islandora_solr_fields_features_default_fields() {
       ),
     ),
   ),
-  25 => array(
+  53 => array(
     'solr_field' => 'cwrc_entity_title_date_ms',
     'field_type' => 'result_fields',
     'weight' => -9,
@@ -900,7 +1068,13 @@ function cwrc_search_islandora_solr_fields_features_default_fields() {
       'link_to_search' => FALSE,
     ),
   ),
-  26 => array(
+  54 => array(
+    'solr_field' => 'cwrc_entry_event_shortProse_et',
+    'field_type' => 'search_fields',
+    'weight' => -9,
+    'solr_field_settings' => FALSE,
+  ),
+  55 => array(
     'solr_field' => 'fgs_createdDate_dt',
     'field_type' => 'sort_fields',
     'weight' => -8,
@@ -941,7 +1115,13 @@ function cwrc_search_islandora_solr_fields_features_default_fields() {
       ),
     ),
   ),
-  27 => array(
+  56 => array(
+    'solr_field' => 'cwrc_entry_event_chronProse_et',
+    'field_type' => 'search_fields',
+    'weight' => -8,
+    'solr_field_settings' => FALSE,
+  ),
+  57 => array(
     'solr_field' => 'cwrc_entity_title_access_condition_ms',
     'field_type' => 'result_fields',
     'weight' => -8,
@@ -972,7 +1152,7 @@ function cwrc_search_islandora_solr_fields_features_default_fields() {
       'link_to_search' => FALSE,
     ),
   ),
-  28 => array(
+  58 => array(
     'solr_field' => 'dc.description',
     'field_type' => 'result_fields',
     'weight' => -7,
@@ -1003,7 +1183,7 @@ function cwrc_search_islandora_solr_fields_features_default_fields() {
       'link_to_search' => FALSE,
     ),
   ),
-  29 => array(
+  59 => array(
     'solr_field' => 'fgs_lastModifiedDate_dt',
     'field_type' => 'sort_fields',
     'weight' => -7,
@@ -1044,7 +1224,19 @@ function cwrc_search_islandora_solr_fields_features_default_fields() {
       ),
     ),
   ),
-  30 => array(
+  60 => array(
+    'solr_field' => 'cwrc_entry_event_place_mt',
+    'field_type' => 'search_fields',
+    'weight' => -7,
+    'solr_field_settings' => FALSE,
+  ),
+  61 => array(
+    'solr_field' => 'cwrc_general_date_ms',
+    'field_type' => 'search_fields',
+    'weight' => -6,
+    'solr_field_settings' => FALSE,
+  ),
+  62 => array(
     'solr_field' => 'cwrc_general_label_et',
     'field_type' => 'result_fields',
     'weight' => -6,
@@ -1075,7 +1267,7 @@ function cwrc_search_islandora_solr_fields_features_default_fields() {
       'link_to_search' => FALSE,
     ),
   ),
-  31 => array(
+  63 => array(
     'solr_field' => 'cwrc_general_description_et',
     'field_type' => 'result_fields',
     'weight' => -5,
@@ -1106,7 +1298,19 @@ function cwrc_search_islandora_solr_fields_features_default_fields() {
       'link_to_search' => FALSE,
     ),
   ),
-  32 => array(
+  64 => array(
+    'solr_field' => 'cwrc_general_description_et',
+    'field_type' => 'search_fields',
+    'weight' => -5,
+    'solr_field_settings' => FALSE,
+  ),
+  65 => array(
+    'solr_field' => 'cwrc_general_label_et',
+    'field_type' => 'search_fields',
+    'weight' => -4,
+    'solr_field_settings' => FALSE,
+  ),
+  66 => array(
     'solr_field' => 'cwrc_general_place_geoloc_debug_ms',
     'field_type' => 'result_fields',
     'weight' => -4,
@@ -1137,7 +1341,7 @@ function cwrc_search_islandora_solr_fields_features_default_fields() {
       'link_to_search' => FALSE,
     ),
   ),
-  33 => array(
+  67 => array(
     'solr_field' => 'cwrc_general_place_mt',
     'field_type' => 'result_fields',
     'weight' => -3,
@@ -1168,7 +1372,13 @@ function cwrc_search_islandora_solr_fields_features_default_fields() {
       'link_to_search' => FALSE,
     ),
   ),
-  34 => array(
+  68 => array(
+    'solr_field' => 'cwrc_general_place_mt',
+    'field_type' => 'search_fields',
+    'weight' => -3,
+    'solr_field_settings' => FALSE,
+  ),
+  69 => array(
     'solr_field' => 'cwrc_general_date_ms',
     'field_type' => 'result_fields',
     'weight' => -2,
@@ -1199,7 +1409,19 @@ function cwrc_search_islandora_solr_fields_features_default_fields() {
       'link_to_search' => FALSE,
     ),
   ),
-  35 => array(
+  70 => array(
+    'solr_field' => 'RELS_EXT_hasModel_uri_mt',
+    'field_type' => 'search_fields',
+    'weight' => -2,
+    'solr_field_settings' => FALSE,
+  ),
+  71 => array(
+    'solr_field' => 'RELS_EXT_hasModel_uri_ms',
+    'field_type' => 'search_fields',
+    'weight' => -1,
+    'solr_field_settings' => FALSE,
+  ),
+  72 => array(
     'solr_field' => 'cwrc_general_place_geoloc_ms ',
     'field_type' => 'result_fields',
     'weight' => -1,
@@ -1230,19 +1452,7 @@ function cwrc_search_islandora_solr_fields_features_default_fields() {
       'link_to_search' => FALSE,
     ),
   ),
-  36 => array(
-    'solr_field' => 'fedora_datastream_version_WORKFLOW_CREATED_ms',
-    'field_type' => 'search_fields',
-    'weight' => 0,
-    'solr_field_settings' => array(),
-  ),
-  37 => array(
-    'solr_field' => 'PID',
-    'field_type' => 'search_fields',
-    'weight' => 1,
-    'solr_field_settings' => array(),
-  ),
-  38 => array(
+  73 => array(
     'solr_field' => 'RELS_EXT_hasModel_uri_s',
     'field_type' => 'facet_fields',
     'weight' => 2,
@@ -1284,19 +1494,7 @@ function cwrc_search_islandora_solr_fields_features_default_fields() {
       ),
     ),
   ),
-  39 => array(
-    'solr_field' => 'workflow_activity_note_current_ms',
-    'field_type' => 'search_fields',
-    'weight' => 2,
-    'solr_field_settings' => array(),
-  ),
-  40 => array(
-    'solr_field' => 'workflow_userID_current_ms',
-    'field_type' => 'search_fields',
-    'weight' => 3,
-    'solr_field_settings' => array(),
-  ),
-  41 => array(
+  74 => array(
     'solr_field' => 'workflow_facet_authority_ms',
     'field_type' => 'facet_fields',
     'weight' => 3,
@@ -1338,7 +1536,7 @@ function cwrc_search_islandora_solr_fields_features_default_fields() {
       ),
     ),
   ),
-  42 => array(
+  75 => array(
     'solr_field' => 'cwrc_entity_factuality_s',
     'field_type' => 'facet_fields',
     'weight' => 4,
@@ -1380,7 +1578,7 @@ function cwrc_search_islandora_solr_fields_features_default_fields() {
       ),
     ),
   ),
-  43 => array(
+  76 => array(
     'solr_field' => 'cwrc_entity_title_format_s',
     'field_type' => 'facet_fields',
     'weight' => 5,
@@ -1422,7 +1620,7 @@ function cwrc_search_islandora_solr_fields_features_default_fields() {
       ),
     ),
   ),
-  44 => array(
+  77 => array(
     'solr_field' => 'cwrc_entity_title_genre_primary_subgenre_ms',
     'field_type' => 'facet_fields',
     'weight' => 6,
@@ -1464,7 +1662,7 @@ function cwrc_search_islandora_solr_fields_features_default_fields() {
       ),
     ),
   ),
-  45 => array(
+  78 => array(
     'solr_field' => 'cwrc_entity_title_genre_folksonomic_ms',
     'field_type' => 'facet_fields',
     'weight' => 7,
@@ -1506,7 +1704,7 @@ function cwrc_search_islandora_solr_fields_features_default_fields() {
       ),
     ),
   ),
-  46 => array(
+  79 => array(
     'solr_field' => 'cwrc_entity_title_date_ms',
     'field_type' => 'facet_fields',
     'weight' => 8,
@@ -1548,12 +1746,12 @@ function cwrc_search_islandora_solr_fields_features_default_fields() {
       ),
     ),
   ),
-  47 => array(
+  80 => array(
     'solr_field' => 'workflow_date_current_dt',
     'field_type' => 'facet_fields',
     'weight' => 9,
     'solr_field_settings' => array(
-      'label' => 'Latest stamp date',
+      'label' => 'Last modified',
       'range_facet_select' => 1,
       'range_facet_variable_gap' => 1,
       'range_facet_start' => 'NOW/YEAR-20YEARS',
@@ -1573,7 +1771,7 @@ function cwrc_search_islandora_solr_fields_features_default_fields() {
       ),
     ),
   ),
-  48 => array(
+  81 => array(
     'solr_field' => 'cwrc_facet_date_100_ms',
     'field_type' => 'facet_fields',
     'weight' => 10,
@@ -1605,7 +1803,7 @@ function cwrc_search_islandora_solr_fields_features_default_fields() {
       ),
     ),
   ),
-  49 => array(
+  82 => array(
     'solr_field' => 'cwrc_facet_date_10_ms',
     'field_type' => 'facet_fields',
     'weight' => 11,
@@ -1637,7 +1835,7 @@ function cwrc_search_islandora_solr_fields_features_default_fields() {
       ),
     ),
   ),
-  50 => array(
+  83 => array(
     'solr_field' => 'ancestors_ms',
     'field_type' => 'result_fields',
     'weight' => 31,
@@ -1690,7 +1888,7 @@ function cwrc_search_islandora_solr_fields_features_default_fields() {
       'link_to_search' => FALSE,
     ),
   ),
-  51 => array(
+  84 => array(
     'solr_field' => 'RELS_EXT_lock-expiry_literal_ms',
     'field_type' => 'result_fields',
     'weight' => 32,
@@ -1742,6 +1940,12 @@ function cwrc_search_islandora_solr_fields_features_default_fields() {
       'link_to_object' => FALSE,
       'link_to_search' => FALSE,
     ),
+  ),
+  85 => array(
+    'solr_field' => 'cwrc_entity_title_date_ms',
+    'field_type' => 'search_fields',
+    'weight' => 37,
+    'solr_field_settings' => FALSE,
   ),
 );
 }

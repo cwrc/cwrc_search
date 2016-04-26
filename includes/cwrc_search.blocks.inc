@@ -24,7 +24,7 @@ function cwrc_search_solr_display_tabs() {
     // No display settings means nothing to do here.
     if (!empty($settings)) {
       // Merge displays and settings into an array that makes sense.
-      foreach ($profiles as $key => &$profile) {
+      foreach ($profiles as $key => $profile) {
         // Is this display enabled and not blacklisted?
         if (!isset($settings['enabled'][$key])
           || $settings['enabled'][$key] === 0
@@ -34,9 +34,9 @@ function cwrc_search_solr_display_tabs() {
 
         // Add the weight information.
         } else if (isset($settings['weight'][$key])) {
-          $profile['weight'] = $settings['weight'][$key];
+          $profiles[$key]['weight'] = $settings['weight'][$key];
         } else {
-          $profile['weight'] = 0;
+          $profiles[$key]['weight'] = 0;
         }
       }
 

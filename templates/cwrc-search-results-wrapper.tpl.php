@@ -17,6 +17,9 @@
     </div>
   <?php } ?>
 
+  <div class="summary">
+    <?php print $summary; ?>
+  </div>
   <div class="results">
     <?php if (is_array($results) && count($results) == 0) { ?>
       <span class="no-results"><?php print t('Sorry, but your search returned no results.'); ?></span>
@@ -33,9 +36,6 @@
     <?php } else { ?>
       <?php print $results; ?>
     <?php } ?>
-  </div>
-  <div class="summary">
-    <?php print $summary; ?>
   </div>
   <div class="pager">
     <?php print $pager; ?>

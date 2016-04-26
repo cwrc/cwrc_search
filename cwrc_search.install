@@ -1,0 +1,11 @@
+<?php
+
+/**
+ * Update the module weight
+ */
+function cwrc_search_update_7100() {
+  db_update('system')
+    ->fields(array('weight' => 10))
+    ->condition('name', 'cwrc_search', '=')
+    ->execute();
+}

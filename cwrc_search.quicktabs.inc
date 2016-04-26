@@ -26,12 +26,6 @@ function cwrc_search_quicktabs_default_quicktabs() {
       'weight' => '-100',
       'type' => 'block',
     ),
-    1 => array(
-      'path' => 'cwrc_search_tag_aware',
-      'title' => 'Tag-aware search',
-      'weight' => '-99',
-      'type' => 'callback',
-    ),
   );
   $quicktabs->renderer = 'quicktabs';
   $quicktabs->style = 'nostyle';
@@ -41,7 +35,6 @@ function cwrc_search_quicktabs_default_quicktabs() {
   // Included for use with string extractors like potx.
   t('Advanced search');
   t('CWRC Advanced Search');
-  t('Tag-aware search');
 
   $export['cwrc_advanced_search'] = $quicktabs;
 

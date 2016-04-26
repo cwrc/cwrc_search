@@ -13,11 +13,13 @@ class CwrcSolrResultsAll extends CwrcSolrResults {
           'label' => t('List'),
           'active' => ($layout == 'list'),
           'url' => url(current_path(), array('query' => array('layout' => 'list') + $parameters)),
+          'key' => 'list',
         ),
         'grid' => array(
           'label' => t('Grid'),
           'active' => ($layout == 'grid'),
           'url' => url(current_path(), array('query' => array('layout' => 'grid') + $parameters)),
+          'key' => 'grid',
         ),
       ),
     ));
@@ -26,18 +28,36 @@ class CwrcSolrResultsAll extends CwrcSolrResults {
   public function printResults($solr_results) {
     // Check for grid/list parameter.
     $layout = isset($_GET['layout']) ? $_GET['layout'] : 'list';
+    $build = array(
+      '#theme' => 'item_list',
+      '#type' => 'ul',
+      '#items' => array(),
+      '#attributes' => array(),
+    );
 
     // Use default grid layout.
     if ($layout == 'grid') {
-      module_load_include('inc', 'islandora_solr_config', 'includes/grid_results');
-      $grid = new IslandoraSolrResultsGrid();
-      return $grid->printResults($solr_results);
+      $build['#attributes']['class'][] = 'grid-layout';
+      foreach ($solr_results['response']['objects'] as $stub) {
+        $content = array(
+          '#theme' => 'cwrc_search_teaser_grid',
+          '#object' => $stub['PID'],
+        );
+        $build['#items'][] = render($content);
+      }
 
     // Use default list layout.
     } else {
-      module_load_include('inc', 'islandora_solr_search', 'includes/results');
-      $list = new IslandoraSolrResults();
-      return $list->printResults($solr_results);
+      $build['#attributes']['class'][] = 'list-layout';
+      foreach ($solr_results['response']['objects'] as $stub) {
+        $content = array(
+          '#theme' => 'cwrc_search_teaser_list',
+          '#object' => $stub['PID'],
+        );
+        $build['#items'][] = render($content);
+      }
     }
+
+    return render($build);
   }
 }
