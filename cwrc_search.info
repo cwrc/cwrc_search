@@ -6,6 +6,7 @@ project = cwrc-feature-cwrc_search
 dependencies[] = borealis_sb
 dependencies[] = citeproc
 dependencies[] = ctools
+dependencies[] = cwrc_projects
 dependencies[] = cwrc_visualization
 dependencies[] = fe_block
 dependencies[] = islandora_saved_searches
