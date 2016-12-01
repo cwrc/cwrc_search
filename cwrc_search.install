@@ -1,7 +1,12 @@
 <?php
 
 /**
- * Update the module weight
+ * @file
+ * Install, update, uninstall the cwrc_search module.
+ */
+
+/**
+ * Update the module weight.
  */
 function cwrc_search_update_7100() {
   db_update('system')

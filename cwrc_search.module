@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @file
  * Code for the cwrc_search feature.
@@ -41,11 +42,11 @@ function cwrc_search_theme($existing, $type, $theme, $path) {
       'template' => 'templates/cwrc-search-results-wrapper',
       'variables' => array(
         'results' => array(),
-        'pager' => null,
-        'summary' => null,
-        'secondary' => null,
-        'layouts' => null,
-        'sort_options' => null,
+        'pager' => NULL,
+        'summary' => NULL,
+        'secondary' => NULL,
+        'layouts' => NULL,
+        'sort_options' => NULL,
       ),
       'file' => 'includes/cwrc_search.theme.inc',
     ),
@@ -53,21 +54,21 @@ function cwrc_search_theme($existing, $type, $theme, $path) {
     // Plotit wrapper template.
     'cwrc_search_results_visualization_wrapper' => array(
       'template' => 'templates/cwrc-search-results-visualization-wrapper',
-      'variables' => array('embed_url' => null),
+      'variables' => array('embed_url' => NULL),
       'file' => 'includes/cwrc_search.theme.inc',
     ),
 
     // Generic "results summary" template.
     'cwrc_search_results_summary' => array(
       'template' => 'templates/cwrc-search-results-summary',
-      'variables' => array('total' => null, 'start' => null, 'end' => null),
+      'variables' => array('total' => NULL, 'start' => NULL, 'end' => NULL),
       'file' => 'includes/cwrc_search.theme.inc',
     ),
 
     // Individual "name" in "list of names".
     'cwrc_search_list_name' => array(
       'template' => 'templates/cwrc-search-list-name',
-      'variables' => array('name' => null, 'url' => null, 'object' => null),
+      'variables' => array('name' => NULL, 'url' => NULL, 'object' => NULL),
       'file' => 'includes/cwrc_search.theme.inc',
     ),
 
@@ -81,18 +82,18 @@ function cwrc_search_theme($existing, $type, $theme, $path) {
     'cwrc_search_teaser_list' => array(
       'template' => 'templates/cwrc-search-teaser-list',
       'variables' => array(
-        'object' => null,
-        'object_url' => null,
-        'cmodel_label' => null,
-        'cmodel_class' => null,
-        'thumbnail' => null,
-        'project_logo' => null,
-        'project_name' => null,
-        'project_url' => null,
-        'dc_title' => null,
-        'dc_creator' => null,
-        'dc_date' => null,
-        'dc_description' => null,
+        'object' => NULL,
+        'object_url' => NULL,
+        'cmodel_label' => NULL,
+        'cmodel_class' => NULL,
+        'thumbnail' => NULL,
+        'project_logo' => NULL,
+        'project_name' => NULL,
+        'project_url' => NULL,
+        'dc_title' => NULL,
+        'dc_creator' => NULL,
+        'dc_date' => NULL,
+        'dc_description' => NULL,
       ),
     ),
 
@@ -100,18 +101,18 @@ function cwrc_search_theme($existing, $type, $theme, $path) {
     'cwrc_search_teaser_grid' => array(
       'template' => 'templates/cwrc-search-teaser-grid',
       'variables' => array(
-        'object' => null,
-        'object_url' => null,
-        'cmodel_label' => null,
-        'cmodel_class' => null,
-        'thumbnail' => null,
-        'project_logo' => null,
-        'project_name' => null,
-        'project_url' => null,
-        'dc_title' => null,
-        'dc_creator' => null,
-        'dc_date' => null,
-        'dc_description' => null,
+        'object' => NULL,
+        'object_url' => NULL,
+        'cmodel_label' => NULL,
+        'cmodel_class' => NULL,
+        'thumbnail' => NULL,
+        'project_logo' => NULL,
+        'project_name' => NULL,
+        'project_url' => NULL,
+        'dc_title' => NULL,
+        'dc_creator' => NULL,
+        'dc_date' => NULL,
+        'dc_description' => NULL,
       ),
     ),
   );
@@ -151,7 +152,7 @@ function cwrc_search_preprocess_cwrc_search_teaser(&$variables) {
   }
 
   // Cannot load and/or find this object, don't do any other processing.
-  if ($variables['object'] === null || $variables['object'] === false) {
+  if ($variables['object'] === NULL || $variables['object'] === FALSE) {
     return;
   }
 
@@ -170,7 +171,14 @@ function cwrc_search_preprocess_cwrc_search_teaser(&$variables) {
 
   // Set label and classes for cmodel.
   $variables['cmodel_label'] = $cmodel_object->label;
-  $variables['cmodel_class'] = strtolower(drupal_clean_css_identifier($cmodel_id, array(':' => '-', ' ' => '-', '_' => '-', '/' => '-', '[' => '-', ']' => '')));
+  $variables['cmodel_class'] = strtolower(drupal_clean_css_identifier($cmodel_id, array(
+    ':' => '-',
+    ' ' => '-',
+    '_' => '-',
+    '/' => '-',
+    '[' => '-',
+    ']' => '',
+  )));
   $variables['classes_array'][] = $variables['cmodel_class'];
 
   // Check for thumbnail datastream.
@@ -220,10 +228,12 @@ function cwrc_search_preprocess_cwrc_search_teaser(&$variables) {
       $title_node = $dc_xpath->evaluate('/oai_dc:dc/dc:title/text()');
       if ($title_node->item(0)) {
         $variables['dc_title'] = $title_node->item(0)->nodeValue;
-      } else {
+      }
+      else {
         $variables['dc_title'] = $object->label;
       }
-    } else {
+    }
+    else {
       $variables['dc_title'] = $object->label;
     }
   }
@@ -232,7 +242,7 @@ function cwrc_search_preprocess_cwrc_search_teaser(&$variables) {
   if (!isset($variables['dc_description']) && isset($dc_doc)) {
     $description_node = $dc_xpath->evaluate('/oai_dc:dc/dc:description/text()');
     if ($description_node->item(0)) {
-      $variables['dc_description'] = truncate_utf8($description_node->item(0)->nodeValue, 200, true, true);
+      $variables['dc_description'] = truncate_utf8($description_node->item(0)->nodeValue, 200, TRUE, TRUE);
     }
   }
 
@@ -259,13 +269,13 @@ function cwrc_search_preprocess_cwrc_search_teaser(&$variables) {
 function cwrc_search_preprocess_islandora_solr(&$variables) {
   foreach ($variables['results'] as &$result) {
     if ($result['thumbnail_url'] == drupal_get_path('module', 'islandora_solr') . '/images/defaultimg.png') {
-      $result['thumbnail_url'] = null;
+      $result['thumbnail_url'] = NULL;
     }
   }
 }
 
 /**
- * Implementation of hook_preprocess_islandora_solr_facet().
+ * Implements hook_preprocess_islandora_solr_facet().
  */
 function cwrc_search_preprocess_islandora_solr_facet(&$variables) {
   // Add a theme hook suggestion just for good measure.
@@ -397,16 +407,19 @@ function cwrc_search_islandora_solr_query($solr) {
   if ($solr->display == 'cwrc_search_list_names') {
     $filter_query = 'RELS_EXT_hasModel_uri_ms:"info:fedora/cwrc:person-entityCModel" OR RELS_EXT_hasModel_uri_ms:"info:fedora/islandora:personCModel"';
 
-  // Limit "documents" to document cmodels.
-  } else if ($solr->display == 'cwrc_search_documents') {
+    // Limit "documents" to document cmodels.
+  }
+  elseif ($solr->display == 'cwrc_search_documents') {
     $filter_query = 'RELS_EXT_hasModel_uri_ms:"info:fedora/cwrc:documentCModel"';
 
-  // Limit "events" to event cmodels.
-  } else if ($solr->display == 'cwrc_search_events') {
+    // Limit "events" to event cmodels.
+  }
+  elseif ($solr->display == 'cwrc_search_events') {
     $filter_query = 'RELS_EXT_hasModel_uri_ms:"info:fedora/islandora:eventCModel"';
 
-  // Limit "bibliographic" to objects with a MODS record.
-  } else if ($solr->display == 'cwrc_search_bibliographic_view') {
+    // Limit "bibliographic" to objects with a MODS record.
+  }
+  elseif ($solr->display == 'cwrc_search_bibliographic_view') {
     $filter_query = 'fedora_datastreams_ms:"MODS"';
   }
 
@@ -455,13 +468,14 @@ function cwrc_search_sort_form($form, &$form_state) {
     return array();
   }
 
-  // get parameters and current sort
+  // Get parameters and current sort.
   $params = drupal_get_query_parameters();
   if (isset($params['sort'])) {
     $sort_params = explode(' ', $params['sort']);
     $current_sort_direction = array_pop($sort_params);
     $current_sort_field = implode(' ', $sort_params);
-  } else {
+  }
+  else {
     $current_sort_direction = 'desc';
     $current_sort_field = 'score';
   }
@@ -503,8 +517,13 @@ function cwrc_search_sort_form_submit($form, &$form_state) {
   drupal_goto(current_path(), array('query' => $params));
 }
 
+/**
+ * Implements hook_form_alter().
+ */
 function cwrc_search_form_alter(&$form, &$form_state, $form_id) {
-  if ($form_id != "islandora_solr_advanced_search_form") return;
+  if ($form_id != "islandora_solr_advanced_search_form") {
+    return;
+  }
   unset($form['xquery']);
 }
 
@@ -513,8 +532,12 @@ function cwrc_search_form_alter(&$form, &$form_state, $form_id) {
  *
  * Primarily used to filter out `fedora-system` namespace cmodels (because we
  * just don't care about those ones).
- * @param  array $models An array of cmodel PIDs.
- * @return A single cmodel PID.
+ *
+ * @param array $models
+ *   An array of cmodel PIDs.
+ *
+ * @return mixed
+ *   A single cmodel PID.
  */
 function _cwrc_search_extract_cmodel($models) {
   foreach ($models as $key => $value) {

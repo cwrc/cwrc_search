@@ -1,5 +1,13 @@
 <?php
 
+/**
+ * @file
+ * Contains \CwrcSolrResults.
+ */
+
+/**
+ * CWRC Solr Results.
+ */
 class CwrcSolrResults extends IslandoraSolrResults {
 
   /**
@@ -13,9 +21,6 @@ class CwrcSolrResults extends IslandoraSolrResults {
    * - Supports display-based "layouts" so displays can render lists of
    * supported layouts without customization.
    *
-   * @see islandora_solr()
-   * @see IslandoraSolrResults::displayResults()
-   *
    * @param IslandoraSolrQueryProcessor $islandora_solr_query
    *   The IslandoraSolrQueryProcessor object which includes the current query
    *   settings and the raw Solr results.
@@ -23,6 +28,9 @@ class CwrcSolrResults extends IslandoraSolrResults {
    * @return string
    *   Returns themed Solr results page, including wrapper and rendered search
    *   results.
+   *
+   * @see islandora_solr()
+   * @see IslandoraSolrResults::displayResults()
    */
   public function displayResults($islandora_solr_query) {
     $this->islandoraSolrQueryProcessor = $islandora_solr_query;
@@ -73,6 +81,8 @@ class CwrcSolrResults extends IslandoraSolrResults {
   }
 
   /**
+   * Return a rendered list of links for available outputs.
+   *
    * Should return a rendered list of links for available layouts, allows things
    * like "Grid" and "List" layouts to be display specific, as some displays
    * shouldn't support these (ie "list of names").
@@ -80,17 +90,16 @@ class CwrcSolrResults extends IslandoraSolrResults {
    * Sub-classes must override this to enable layouts.
    */
   public function getLayouts() {
-    return null;
+    return NULL;
   }
 
   /**
-   * Overrides the default addSecondaries function to remove them, as they
-   * are not useful for our purposes.
-   *
-   * @see IslandoraSolrResults::addSecondaries()
+   * {@inheritdoc}
    */
   public function addSecondaries($islandora_solr_query) {
-    return null;
+    // Overrides the default addSecondaries function to remove them, as they are
+    // not useful for our purposes.
+    return NULL;
   }
 
   /**
@@ -115,7 +124,7 @@ class CwrcSolrResults extends IslandoraSolrResults {
    * @param string $filter
    *   The passed in filter.
    * @param object $islandora_solr_query
-   *   The current Solr Query
+   *   The current Solr Query.
    *
    * @return string
    *   The formatted filter string for breadcrumbs and active query.
@@ -170,13 +179,15 @@ class CwrcSolrResults extends IslandoraSolrResults {
     $filter_string = stripslashes($filter_string);
 
     // Determine whether or not to replace with PID.
-    foreach (islandora_solr_get_fields('facet_fields', false, false) as $field) {
+    foreach (islandora_solr_get_fields('facet_fields', FALSE, FALSE) as $field) {
       if ($field['solr_field'] == $field_name
         && $field['solr_field_settings']['pid_object_label']) {
         try {
-          $object = islandora_object_load(str_replace('info:fedora/', '',$filter_string));
+          $object = islandora_object_load(str_replace('info:fedora/', '', $filter_string));
           $filter_string = $object->label;
-        } catch (Exception $e) {}
+        }
+        catch (Exception $e) {
+        }
       }
     }
     return $filter_string;
@@ -201,11 +212,11 @@ class CwrcSolrResults extends IslandoraSolrResults {
   public function displayFacets($islandora_solr_query) {
     // Determine what display we are using and get settings for that display.
     if (isset($_GET['display'])) {
-        $active_display = $_GET['display'];
+      $active_display = $_GET['display'];
       $search_displays = cwrc_search_islandora_solr_primary_display();
-      $display = isset($search_displays[$active_display]) ? $search_displays[$active_display] : null;
-      if (isset($display['hide_facets']) && $display['hide_facets'] === true) {
-        return null;
+      $display = isset($search_displays[$active_display]) ? $search_displays[$active_display] : NULL;
+      if (isset($display['hide_facets']) && $display['hide_facets'] === TRUE) {
+        return NULL;
       }
     }
 
@@ -224,4 +235,5 @@ class CwrcSolrResults extends IslandoraSolrResults {
     $output = str_replace('%2B', '%252B', $output);
     return $output;
   }
+
 }

@@ -1,4 +1,9 @@
 <?php
+
+/**
+ * @file
+ * Displays a layout selection box.
+ */
 $display = (isset($_GET['display']) ? $_GET['display'] : NULL);
 $label = ($display == "cwrc_search_bibliographic_view" ? t('Bibliographic Format') : t('Layout'));
 ?>

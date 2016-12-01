@@ -1,3 +1,10 @@
+<?php
+
+/**
+ * @file
+ * Displays a search results page.
+ */
+?>
 <div class="cwrc-search-wrapper">
   <?php if (isset($secondary)) { ?>
     <!--<div class="secondary-displays">
@@ -24,7 +31,7 @@
     <?php if (is_array($results) && count($results) == 0) { ?>
       <span class="no-results"><?php print t('Sorry, but your search returned no results.'); ?></span>
 
-    <?php } else if (is_array($results)) { ?>
+    <?php } elseif (is_array($results)) { ?>
       <ul class="results">
         <?php foreach ($results as $result) { ?>
           <li class="result">

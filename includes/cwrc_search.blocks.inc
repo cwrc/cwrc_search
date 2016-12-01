@@ -1,6 +1,13 @@
 <?php
 
 /**
+ * @file
+ * Islandora solr query blocks.
+ */
+
+/**
+ * Display switch block that shows tabs for alternate displays.
+ *
  * Show display switching tabs in a block, mimics behaviour of default display
  * switcher, but implements a "blacklist" to hide undesireable displays from the
  * list like "XQeury" and "CWRC Reports". Also hides itself when using a
@@ -32,10 +39,12 @@ function cwrc_search_solr_display_tabs() {
 
           unset($profiles[$key]);
 
-        // Add the weight information.
-        } else if (isset($settings['weight'][$key])) {
+          // Add the weight information.
+        }
+        elseif (isset($settings['weight'][$key])) {
           $profiles[$key]['weight'] = $settings['weight'][$key];
-        } else {
+        }
+        else {
           $profiles[$key]['weight'] = 0;
         }
       }
@@ -77,13 +86,15 @@ function cwrc_search_solr_display_tabs() {
           $attributes = array(
             'class' => array('active'),
           );
-        } else {
+        }
+        else {
           $attributes = array();
         }
         $options = array(
           'query' => $query,
         );
         $url = url(current_path(), $options);
+        // TODO: Only string literals should be passed to t() where possible.
         $build['display_tabs']['#items'][] = "<a href=$url" . drupal_attributes($attributes) . ">" . t($profile['name']) . "</a>";
       }
     }

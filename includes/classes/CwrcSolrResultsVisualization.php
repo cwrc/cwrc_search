@@ -1,10 +1,19 @@
 <?php
 
+/**
+ * @file
+ * Contains \CwrcSolrResultsVisualization.
+ */
+
 module_load_include('php', 'cwrc_search', 'includes/classes/CwrcSolrResults');
 
+/**
+ * CWRC Solr results visualization.
+ */
 class CwrcSolrResultsVisualization extends CwrcSolrResults {
+
   /**
-   * @see CwrcSolrResults::displayResults()
+   * {@inheritdoc}
    */
   public function displayResults($islandora_solr_query) {
     // Determine what display we are using and get settings for that display.
@@ -16,7 +25,8 @@ class CwrcSolrResultsVisualization extends CwrcSolrResults {
     $query = drupal_get_query_parameters();
     $query['solr_profile'] = $display['original_display'];
     return theme('cwrc_search_results_visualization_wrapper', array(
-      'embed_url' => url(current_path(), array('query' => $query, 'absolute' => true)),
+      'embed_url' => url(current_path(), array('query' => $query, 'absolute' => TRUE)),
     ));
   }
+
 }

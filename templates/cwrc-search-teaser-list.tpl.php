@@ -1,3 +1,10 @@
+<?php
+
+/**
+ * @file
+ * Displays search results as a list of teasers.
+ */
+?>
 <div class="<?php print $classes ?>">
 
   <div class="top-wrapper">
@@ -38,7 +45,7 @@
           <?php } ?>
         </div>
       </div>
-      <?php } ?>
+    <?php } ?>
     </div>
   </div>
 

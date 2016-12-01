@@ -1,3 +1,10 @@
+<?php
+
+/**
+ * @file
+ * Displays a search result summary.
+ */
+?>
 <div class="results-summary">
   <?php if ($total == 0): ?>
   <?php print t('There are zero results.'); ?>

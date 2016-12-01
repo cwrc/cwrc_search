@@ -1,17 +1,22 @@
 <?php
 
+/**
+ * @file
+ * Contains \CwrcSolrResultsListNames.
+ */
+
 module_load_include('php', 'cwrc_search', 'includes/classes/CwrcSolrResults');
 
 /**
- * "List of names" search display class.
+ * List of names search display class.
  */
 class CwrcSolrResultsListNames extends CwrcSolrResults {
 
   /**
-   * @see CwrcSolrResults::displayResults()
+   * {@inheritdoc}
    */
   public function printResults($solr_results) {
-
+    // See also CwrcSolrResults::displayResults().
     $results = array();
 
     // Very simple display here, just list names with labels.
@@ -25,4 +30,5 @@ class CwrcSolrResultsListNames extends CwrcSolrResults {
     // Return themed search results.
     return $results;
   }
+
 }

@@ -1,3 +1,10 @@
+<?php
+
+/**
+ * @file
+ * Displays search results as a grid of teasers.
+ */
+?>
 <div class="<?php print $classes ?>">
 
   <div class="top-wrapper">

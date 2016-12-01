@@ -1,3 +1,10 @@
+<?php
+
+/**
+ * @file
+ * Displays a wrapper for a search results visualization.
+ */
+?>
 <div class="cwrc-search-wrapper">
   <div class="iframe-wrapper">
     <iframe class="<?php print $classes ?>" src="<?php print $embed_url; ?>"></iframe>

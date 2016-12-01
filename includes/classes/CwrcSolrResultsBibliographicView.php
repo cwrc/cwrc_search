@@ -1,10 +1,21 @@
 <?php
 
+/**
+ * @file
+ * Contains \CwrcSolrResultsBibliographicView.
+ */
+
 module_load_include('php', 'cwrc_search', 'includes/classes/CwrcSolrResults');
 module_load_include('inc', 'csl', 'includes/csl');
 
+/**
+ * Bibliographic results view of CWRC Solr results.
+ */
 class CwrcSolrResultsBibliographicView extends CwrcSolrResults {
 
+  /**
+   * {@inheritdoc}
+   */
   public function getLayouts() {
     $names = $this->getCslLayouts();
     $layout = (isset($_GET['layout']) && isset($names[$_GET['layout']])) ? $_GET['layout'] : drupal_html_class(CSL::GetDefaultName());
@@ -24,10 +35,10 @@ class CwrcSolrResultsBibliographicView extends CwrcSolrResults {
   }
 
   /**
-   * @see CwrcSolrResults::displayResults()
+   * {@inheritdoc}
    */
   public function printResults($solr_results) {
-
+    // See also CwrcSolrResults::displayResults().
     $results = array();
 
     $layouts = $this->getCslLayouts();
@@ -37,13 +48,19 @@ class CwrcSolrResultsBibliographicView extends CwrcSolrResults {
     foreach ($solr_results['response']['objects'] as $solr_result) {
       $mods = islandora_datastream_load('MODS', $solr_result['PID']);
       $rendered = citeproc_bibliography_from_mods(citeproc_style($layouts[$layout]), $mods->content);
-      $results[] = l($rendered, 'islandora/object/' . $solr_result['PID'], array('html' => true));
+      $results[] = l($rendered, 'islandora/object/' . $solr_result['PID'], array('html' => TRUE));
     }
 
     // Return themed search results.
     return $results;
   }
 
+  /**
+   * Returns a list of CSL layout names.
+   *
+   * @return array
+   *   An array of CSL layout names.
+   */
   protected function getCslLayouts() {
     $names = array();
     foreach (CSL::GetNames() as $name) {
@@ -52,4 +69,5 @@ class CwrcSolrResultsBibliographicView extends CwrcSolrResults {
     }
     return $names;
   }
+
 }

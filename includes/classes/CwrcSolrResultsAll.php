@@ -1,9 +1,20 @@
 <?php
 
+/**
+ * @file
+ * Contains \CwrcSolrResultsAll.
+ */
+
 module_load_include('php', 'cwrc_search', 'includes/classes/CwrcSolrResults');
 
+/**
+ * All CWRC Solr results.
+ */
 class CwrcSolrResultsAll extends CwrcSolrResults {
 
+  /**
+   * {@inheritdoc}
+   */
   public function getLayouts() {
     $layout = isset($_GET['layout']) ? $_GET['layout'] : 'list';
     $parameters = drupal_get_query_parameters();
@@ -25,6 +36,9 @@ class CwrcSolrResultsAll extends CwrcSolrResults {
     ));
   }
 
+  /**
+   * {@inheritdoc}
+   */
   public function printResults($solr_results) {
     // Check for grid/list parameter.
     $layout = isset($_GET['layout']) ? $_GET['layout'] : 'list';
@@ -46,8 +60,9 @@ class CwrcSolrResultsAll extends CwrcSolrResults {
         $build['#items'][] = render($content);
       }
 
-    // Use default list layout.
-    } else {
+      // Use default list layout.
+    }
+    else {
       $build['#attributes']['class'][] = 'list-layout';
       foreach ($solr_results['response']['objects'] as $stub) {
         $content = array(
@@ -60,4 +75,5 @@ class CwrcSolrResultsAll extends CwrcSolrResults {
 
     return render($build);
   }
+
 }

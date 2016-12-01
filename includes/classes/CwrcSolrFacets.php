@@ -1,5 +1,13 @@
 <?php
 
+/**
+ * @file
+ * Contains \CwrcSolrFacets.
+ */
+
+/**
+ * CWRC Solr facets.
+ */
 class CwrcSolrFacets extends IslandoraSolrFacets {
 
   /**
@@ -17,34 +25,34 @@ class CwrcSolrFacets extends IslandoraSolrFacets {
     $this->findFacetType();
     $this->getFacetResults();
     if (empty($this->results)) {
-      return;
+      return '';
     }
     $this->processFacets();
     if (empty($this->content)) {
-      return;
+      return '';
     }
 
     // Only show workflow date current when using cwrc_report display.
     if ($this->facet_field == 'workflow_date_current_dt'
       && (!isset($_GET['display'])
       || $_GET['display'] != 'cwrc_report')) {
-      return;
+      return '';
     }
 
     // Only show decade facet when century facet is active.
     if ($this->facet_field == 'cwrc_facet_date_10_ms') {
-      $show = false;
+      $show = FALSE;
       if (isset($_GET['f'])) {
         foreach ($_GET['f'] as $fq) {
           $pieces = explode(':', $fq);
           if ($pieces[0] == 'cwrc_facet_date_100_ms') {
-            $show = true;
+            $show = TRUE;
           }
         }
       }
 
-      if ($show === false) {
-        return;
+      if ($show === FALSE) {
+        return '';
       }
     }
 
@@ -60,7 +68,7 @@ class CwrcSolrFacets extends IslandoraSolrFacets {
    * Prepare facet fields for text rendering.
    */
   public function prepareFacetFields() {
-    // For the ancestors_ms field we remove non-project/research space PIDs
+    // For the ancestors_ms field we remove non-project/research space PIDs.
     if ($this->facet_field == 'ancestors_ms') {
       foreach ($this->results as $pid => $count) {
         if (!_cwrc_projects_is_project($pid)
@@ -85,7 +93,7 @@ class CwrcSolrFacets extends IslandoraSolrFacets {
    *   An array with the prepared facet results.
    */
   public function renderText($results) {
-    // For the ancestors_ms field we sort into projects and research spaces
+    // For the ancestors_ms field we sort into projects and research spaces.
     if ($this->facet_field == 'ancestors_ms') {
       $facet_field = $this->facet_field;
       $islandora_solr_query = self::$islandoraSolrQuery;
@@ -97,7 +105,8 @@ class CwrcSolrFacets extends IslandoraSolrFacets {
       foreach ($results as $key => $value) {
         if (_cwrc_projects_is_project($value['bucket'])) {
           $projects[] = $value;
-        } else {
+        }
+        else {
           $research_spaces[] = $value;
         }
       }
@@ -212,8 +221,10 @@ class CwrcSolrFacets extends IslandoraSolrFacets {
           'pid' => $facet_field,
         ));
       }
-    } else {
+    }
+    else {
       parent::renderText($results);
     }
   }
+
 }
