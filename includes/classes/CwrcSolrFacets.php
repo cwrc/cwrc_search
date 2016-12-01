@@ -105,7 +105,7 @@ class CwrcSolrFacets extends IslandoraSolrFacets {
 
       $projects = array();
       $research_spaces = array();
-      foreach ($results as $key => $value) {
+      foreach ($results as $value) {
         if (_cwrc_projects_is_project($value['bucket'])) {
           $projects[] = $value;
         }
@@ -115,7 +115,7 @@ class CwrcSolrFacets extends IslandoraSolrFacets {
       }
       $soft_limit = count($projects);
 
-      foreach (array_merge($projects, $research_spaces) as $key => $values) {
+      foreach (array_merge($projects, $research_spaces) as $values) {
         $bucket = $values['bucket'];
         $filter = $values['filter'];
         $count = $values['count'];
