@@ -165,7 +165,7 @@ function cwrc_search_preprocess_cwrc_search_teaser(&$variables) {
   // Load cmodel object and statically cache it.
   $cmodel_id = _cwrc_search_extract_cmodel($object->models);
   $cmodel_object = &drupal_static(__FUNCTION__ . ':' . $cmodel_id);
-  if (!isset($cmodel)) {
+  if (!isset($cmodel_object)) {
     $cmodel_object = islandora_object_load($cmodel_id);
   }
 
