@@ -10,6 +10,9 @@ module_load_include('inc', 'csl', 'includes/csl');
 
 /**
  * Bibliographic results view of CWRC Solr results.
+ *
+ * TODO: Best practices say that the class name should be prefixed with the
+ * project name, i.e.: "CwrcSearch", instead of just "Cwrc".
  */
 class CwrcSolrResultsBibliographicView extends CwrcSolrResults {
 

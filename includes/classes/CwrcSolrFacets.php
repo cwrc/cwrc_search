@@ -7,6 +7,9 @@
 
 /**
  * CWRC Solr facets.
+ *
+ * TODO: Best practices say that the class name should be prefixed with the
+ * project name, i.e.: "CwrcSearch", instead of just "Cwrc".
  */
 class CwrcSolrFacets extends IslandoraSolrFacets {
 
