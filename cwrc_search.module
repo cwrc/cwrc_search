@@ -7,6 +7,8 @@
 
 include_once 'cwrc_search.features.inc';
 
+/* Hooks */
+
 /**
  * Implements hook_menu().
  */
@@ -116,162 +118,6 @@ function cwrc_search_theme($existing, $type, $theme, $path) {
       ),
     ),
   );
-}
-
-/**
- * Loads variables for display of an object in a search view.
- */
-function cwrc_search_preprocess_cwrc_search_teaser_list(&$variables) {
-  // Pass to generic preprocessor for most variables.
-  cwrc_search_preprocess_cwrc_search_teaser($variables);
-
-  // Add list class.
-  $variables['classes_array'][] = 'list-display';
-}
-
-/**
- * Loads variables for display of an object in a search view.
- */
-function cwrc_search_preprocess_cwrc_search_teaser_grid(&$variables) {
-  // Pass to generic preprocessor for most variables.
-  cwrc_search_preprocess_cwrc_search_teaser($variables);
-
-  // Add list class.
-  $variables['classes_array'][] = 'grid-display';
-}
-
-/**
- * Loads variables for display of an object in a search view.
- */
-function cwrc_search_preprocess_cwrc_search_teaser(&$variables) {
-  global $language;
-
-  // Attempt to load the object from PID.
-  if (!is_object($variables['object']) && is_scalar($variables['object'])) {
-    $variables['object'] = islandora_object_load($variables['object']);
-  }
-
-  // Cannot load and/or find this object, don't do any other processing.
-  if ($variables['object'] === NULL || $variables['object'] === FALSE) {
-    return;
-  }
-
-  // Get the object from the set variables.
-  $object = $variables['object'];
-
-  // Object URL.
-  $variables['object_url'] = url('islandora/object/' . $object->id);
-
-  // Load cmodel object and statically cache it.
-  $cmodel_id = _cwrc_search_extract_cmodel($object->models);
-  $cmodel_object = &drupal_static(__FUNCTION__ . ':' . $cmodel_id);
-  if (!isset($cmodel_object)) {
-    $cmodel_object = islandora_object_load($cmodel_id);
-  }
-
-  // Set label and classes for cmodel.
-  $variables['cmodel_label'] = $cmodel_object->label;
-  $variables['cmodel_class'] = strtolower(drupal_clean_css_identifier($cmodel_id, array(
-    ':' => '-',
-    ' ' => '-',
-    '_' => '-',
-    '/' => '-',
-    '[' => '-',
-    ']' => '',
-  )));
-  $variables['classes_array'][] = $variables['cmodel_class'];
-
-  // Check for thumbnail datastream.
-  if (!isset($variables['thumbnail']) && isset($object['TN'])) {
-    $image = array(
-      '#theme' => 'image',
-      '#path' => url('islandora/object/' . $object->id . '/datastream/TN/view'),
-      '#alt' => t('@object thumbnail', array('@object' => $object->label)),
-      '#attributes' => array(),
-    );
-    $variables['thumbnail'] = render($image);
-  }
-
-  // Check for single parent project, set logo and id.
-  $project = _cwrc_projects_get_project($object->id);
-  if ($project) {
-    $wrapper = entity_metadata_wrapper('node', $project);
-    $wrapper->language($language->language);
-    $variables['project_name'] = $wrapper->title_field->value();
-    $variables['project_url'] = url('node/' . $wrapper->getIdentifier());
-    if ($value = $wrapper->field_logo->value()) {
-      $image = array(
-        '#theme' => 'image_style',
-        '#style_name' => 'thumbnail',
-        '#path' => $value['uri'],
-        '#alt' => $value['alt'],
-        '#attributes' => array(),
-      );
-      $variables['project_logo'] = render($image);
-    }
-  }
-
-  // Load DC datastream into DOMDocument wrapper.
-  if (isset($object['DC'])) {
-    $dc_doc = new DOMDocument();
-    $dc_doc->loadXML($object['DC']->content);
-
-    // Get xpath and register dc namespaces for querying.
-    $dc_xpath = new DOMXPath($dc_doc);
-    $dc_xpath->registerNamespace('dc', 'http://purl.org/dc/elements/1.1/');
-    $dc_xpath->registerNamespace('oai_dc', 'http://www.openarchives.org/OAI/2.0/oai_dc/');
-  }
-
-  // Check for DC title, fallback on object label.
-  if (!isset($variables['dc_title'])) {
-    if (isset($dc_doc)) {
-      $title_node = $dc_xpath->evaluate('/oai_dc:dc/dc:title/text()');
-      if ($title_node->item(0)) {
-        $variables['dc_title'] = $title_node->item(0)->nodeValue;
-      }
-      else {
-        $variables['dc_title'] = $object->label;
-      }
-    }
-    else {
-      $variables['dc_title'] = $object->label;
-    }
-  }
-
-  // Check for DC description.
-  if (!isset($variables['dc_description']) && isset($dc_doc)) {
-    $description_node = $dc_xpath->evaluate('/oai_dc:dc/dc:description/text()');
-    if ($description_node->item(0)) {
-      $variables['dc_description'] = truncate_utf8($description_node->item(0)->nodeValue, 200, TRUE, TRUE);
-    }
-  }
-
-  // Check for DC creator.
-  if (!isset($variables['dc_creator']) && isset($dc_doc)) {
-    $creator_node = $dc_xpath->evaluate('/oai_dc:dc/dc:creator/text()');
-    if ($creator_node->item(0)) {
-      $variables['dc_creator'] = $creator_node->item(0)->nodeValue;
-    }
-  }
-
-  // Check for DC date.
-  if (!isset($variables['dc_date']) && isset($dc_doc)) {
-    $date_node = $dc_xpath->evaluate('/oai_dc:dc/dc:date/text()');
-    if ($date_node->item(0)) {
-      $variables['dc_date'] = $date_node->item(0)->nodeValue;
-    }
-  }
-}
-
-/**
- * Blocks the default image from the thumbnail URL.
- */
-function cwrc_search_preprocess_islandora_solr(&$variables) {
-  foreach ($variables['results'] as &$result) {
-    if ($result['thumbnail_url'] == drupal_get_path('module', 'islandora_solr') . '/images/defaultimg.png') {
-      $result['thumbnail_url'] = NULL;
-    }
-  }
 }
 
 /**
@@ -429,6 +275,182 @@ function cwrc_search_islandora_solr_query($solr) {
   }
 }
 
+/**
+ * Implements hook_form_alter().
+ */
+function cwrc_search_form_alter(&$form, &$form_state, $form_id) {
+  if ($form_id != "islandora_solr_advanced_search_form") {
+    return;
+  }
+  unset($form['xquery']);
+}
+
+/* Theme functions. */
+
+/**
+ * Implements MODULE_preprocess_HOOK() for cwrc_search_teaser_list.
+ *
+ * Loads variables for display of an object in a search view.
+ */
+function cwrc_search_preprocess_cwrc_search_teaser_list(&$variables) {
+  // Pass to generic preprocessor for most variables.
+  cwrc_search_preprocess_cwrc_search_teaser($variables);
+
+  // Add list class.
+  $variables['classes_array'][] = 'list-display';
+}
+
+/**
+ * Implements MODULE_preprocess_HOOK() for cwrc_search_teaser_grid.
+ *
+ * Loads variables for display of an object in a search view.
+ */
+function cwrc_search_preprocess_cwrc_search_teaser_grid(&$variables) {
+  // Pass to generic preprocessor for most variables.
+  cwrc_search_preprocess_cwrc_search_teaser($variables);
+
+  // Add list class.
+  $variables['classes_array'][] = 'grid-display';
+}
+
+/**
+ * Implements MODULE_preprocess_HOOK() for cwrc_search_teaser.
+ *
+ * Loads variables for display of an object in a search view.
+ */
+function cwrc_search_preprocess_cwrc_search_teaser(&$variables) {
+  global $language;
+
+  // Attempt to load the object from PID.
+  if (!is_object($variables['object']) && is_scalar($variables['object'])) {
+    $variables['object'] = islandora_object_load($variables['object']);
+  }
+
+  // Cannot load and/or find this object, don't do any other processing.
+  if ($variables['object'] === NULL || $variables['object'] === FALSE) {
+    return;
+  }
+
+  // Get the object from the set variables.
+  $object = $variables['object'];
+
+  // Object URL.
+  $variables['object_url'] = url('islandora/object/' . $object->id);
+
+  // Load cmodel object and statically cache it.
+  $cmodel_id = _cwrc_search_extract_cmodel($object->models);
+  $cmodel_object = &drupal_static(__FUNCTION__ . ':' . $cmodel_id);
+  if (!isset($cmodel_object)) {
+    $cmodel_object = islandora_object_load($cmodel_id);
+  }
+
+  // Set label and classes for cmodel.
+  $variables['cmodel_label'] = $cmodel_object->label;
+  $variables['cmodel_class'] = strtolower(drupal_clean_css_identifier($cmodel_id, array(
+    ':' => '-',
+    ' ' => '-',
+    '_' => '-',
+    '/' => '-',
+    '[' => '-',
+    ']' => '',
+  )));
+  $variables['classes_array'][] = $variables['cmodel_class'];
+
+  // Check for thumbnail datastream.
+  if (!isset($variables['thumbnail']) && isset($object['TN'])) {
+    $image = array(
+      '#theme' => 'image',
+      '#path' => url('islandora/object/' . $object->id . '/datastream/TN/view'),
+      '#alt' => t('@object thumbnail', array('@object' => $object->label)),
+      '#attributes' => array(),
+    );
+    $variables['thumbnail'] = render($image);
+  }
+
+  // Check for single parent project, set logo and id.
+  $project = _cwrc_projects_get_project($object->id);
+  if ($project) {
+    $wrapper = entity_metadata_wrapper('node', $project);
+    $wrapper->language($language->language);
+    $variables['project_name'] = $wrapper->title_field->value();
+    $variables['project_url'] = url('node/' . $wrapper->getIdentifier());
+    if ($value = $wrapper->field_logo->value()) {
+      $image = array(
+        '#theme' => 'image_style',
+        '#style_name' => 'thumbnail',
+        '#path' => $value['uri'],
+        '#alt' => $value['alt'],
+        '#attributes' => array(),
+      );
+      $variables['project_logo'] = render($image);
+    }
+  }
+
+  // Load DC datastream into DOMDocument wrapper.
+  if (isset($object['DC'])) {
+    $dc_doc = new DOMDocument();
+    $dc_doc->loadXML($object['DC']->content);
+
+    // Get xpath and register dc namespaces for querying.
+    $dc_xpath = new DOMXPath($dc_doc);
+    $dc_xpath->registerNamespace('dc', 'http://purl.org/dc/elements/1.1/');
+    $dc_xpath->registerNamespace('oai_dc', 'http://www.openarchives.org/OAI/2.0/oai_dc/');
+  }
+
+  // Check for DC title, fallback on object label.
+  if (!isset($variables['dc_title'])) {
+    if (isset($dc_doc)) {
+      $title_node = $dc_xpath->evaluate('/oai_dc:dc/dc:title/text()');
+      if ($title_node->item(0)) {
+        $variables['dc_title'] = $title_node->item(0)->nodeValue;
+      }
+      else {
+        $variables['dc_title'] = $object->label;
+      }
+    }
+    else {
+      $variables['dc_title'] = $object->label;
+    }
+  }
+
+  // Check for DC description.
+  if (!isset($variables['dc_description']) && isset($dc_doc)) {
+    $description_node = $dc_xpath->evaluate('/oai_dc:dc/dc:description/text()');
+    if ($description_node->item(0)) {
+      $variables['dc_description'] = truncate_utf8($description_node->item(0)->nodeValue, 200, TRUE, TRUE);
+    }
+  }
+
+  // Check for DC creator.
+  if (!isset($variables['dc_creator']) && isset($dc_doc)) {
+    $creator_node = $dc_xpath->evaluate('/oai_dc:dc/dc:creator/text()');
+    if ($creator_node->item(0)) {
+      $variables['dc_creator'] = $creator_node->item(0)->nodeValue;
+    }
+  }
+
+  // Check for DC date.
+  if (!isset($variables['dc_date']) && isset($dc_doc)) {
+    $date_node = $dc_xpath->evaluate('/oai_dc:dc/dc:date/text()');
+    if ($date_node->item(0)) {
+      $variables['dc_date'] = $date_node->item(0)->nodeValue;
+    }
+  }
+}
+
+/**
+ * Implements MODULE_preprocess_HOOK() for islandora_solr.
+ *
+ * Blocks the default image from the thumbnail URL.
+ */
+function cwrc_search_preprocess_islandora_solr(&$variables) {
+  foreach ($variables['results'] as &$result) {
+    if ($result['thumbnail_url'] == drupal_get_path('module', 'islandora_solr') . '/images/defaultimg.png') {
+      $result['thumbnail_url'] = NULL;
+    }
+  }
+}
+
 /* Menu callbacks. */
 
 /**
@@ -517,15 +539,7 @@ function cwrc_search_sort_form_submit($form, &$form_state) {
   drupal_goto(current_path(), array('query' => $params));
 }
 
-/**
- * Implements hook_form_alter().
- */
-function cwrc_search_form_alter(&$form, &$form_state, $form_id) {
-  if ($form_id != "islandora_solr_advanced_search_form") {
-    return;
-  }
-  unset($form['xquery']);
-}
+/* Helper functions. */
 
 /**
  * Helper function that extracts a single valid cmodel from a passed array.
