@@ -6,6 +6,16 @@
  */
 
 /**
+ * Implements hook_install().
+ */
+function cwrc_search_install() {
+  // Call the first update hook to ensure the module's weight is set correctly
+  // when it is installed from scratch (Drupal would otherwise skip the update
+  // hook).
+  cwrc_search_update_7100();
+}
+
+/**
  * Update the module weight.
  */
 function cwrc_search_update_7100() {
