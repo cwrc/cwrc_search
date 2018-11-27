@@ -32,6 +32,16 @@
       </div>
     <?php } ?>
 
+    <?php if (!empty($k_labels_mods)) : ?>
+      <div class="mods-k-labels">
+        <?php foreach ($k_labels_mods as $label_url) : ?>
+        <a href="<?php print $label_url; ?>">
+          <?php print $label_url; ?>
+        </a>
+        <?php endforeach; ?>
+      </div>
+    <?php endif; ?>
+
     <?php if (isset($dc_creator) || isset($dc_date)) { ?>
       <div class="creation-info">
         <div class="creator">

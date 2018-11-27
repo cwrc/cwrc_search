@@ -314,6 +314,25 @@ function cwrc_search_preprocess_cwrc_search_teaser_grid(&$variables) {
 }
 
 /**
+ * Get the value of attribute from the XML.
+ */
+function cwrc_search_get_attributes_from_xml($xml, $tag = 'accessCondition', $attr = 'xlink', $key = 'href') {
+  $values = array();
+  $xmlObj = new SimpleXMLElement($xml);
+  if (!empty($xmlObj->{$tag})) {
+    foreach ($xmlObj->{$tag} as $element) {
+      $element_attr = $element->attributes($attr, true);
+      if (!empty($element_attr) && !empty($element_attr->{$key})) {
+        $val = (array) $element_attr->{$key};
+        $values[] = array_shift($val);
+      }
+    }
+  }
+
+  return $values;
+}
+
+/**
  * Implements MODULE_preprocess_HOOK() for cwrc_search_teaser.
  *
  * Loads variables for display of an object in a search view.
@@ -333,6 +352,13 @@ function cwrc_search_preprocess_cwrc_search_teaser(&$variables) {
 
   // Get the object from the set variables.
   $object = $variables['object'];
+
+  if (!empty($object['MODS'])) {
+    $xlinks = cwrc_search_get_attributes_from_xml($object['MODS']->content);
+    if (!empty($xlinks)) {
+      $variables['k_labels_mods'] = $xlinks;
+    }
+  }
 
   // Object URL.
   $variables['object_url'] = url('islandora/object/' . $object->id);
