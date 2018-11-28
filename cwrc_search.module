@@ -590,3 +590,21 @@ function _cwrc_search_extract_cmodel($models) {
   $return = reset($models);
   return $return;
 }
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function cwrc_search_preprocess_islandora_basic_collection_wrapper(&$variables) {
+  // Attempt to load the object from PID.
+  if (!is_object($variables['islandora_object']) && is_scalar($variables['islandora_object'])) {
+    $variables['islandora_object'] = islandora_object_load($variables['islandora_object']);
+  }
+  $object = $variables['islandora_object'];
+
+  if (!empty($object['MODS'])) {
+    $xlinks = cwrc_search_get_attributes_from_xml($object['MODS']->content);
+    if (!empty($xlinks)) {
+      $variables['k_labels_mods'] = $xlinks;
+    }
+  }
+}
