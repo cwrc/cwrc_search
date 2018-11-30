@@ -353,13 +353,9 @@ function cwrc_search_preprocess_cwrc_search_teaser(&$variables) {
   // Get the object from the set variables.
   $object = $variables['object'];
 
-  if (!empty($object['MODS'])) {
-    $xlinks = cwrc_search_get_attributes_from_xml($object['MODS']->content);
-    if (!empty($xlinks)) {
-      $terms = tk_label_retrieve_term($xlinks);
-      $variables['tk_labels'] = tk_label_render_link_icon($terms);
-    }
-  }
+  // Add TK and Workflow stamp labels.
+  _cwrc_search_add_tk_labels_to_object($object, $variables);
+  _cwrc_search_add_stamp_labels_to_object($object, $variables);
 
   // Object URL.
   $variables['object_url'] = url('islandora/object/' . $object->id);
@@ -602,11 +598,47 @@ function cwrc_search_preprocess_islandora_basic_collection_wrapper(&$variables) 
   }
   $object = $variables['islandora_object'];
 
+  // Add TK and Workflow stamp labels.
+  _cwrc_search_add_tk_labels_to_object($object, $variables);
+  _cwrc_search_add_stamp_labels_to_object($object, $variables);
+}
+
+/**
+ * Show TK label to object.
+ */
+function _cwrc_search_add_tk_labels_to_object($object, &$variables) {
   if (!empty($object['MODS'])) {
     $xlinks = cwrc_search_get_attributes_from_xml($object['MODS']->content);
     if (!empty($xlinks)) {
       $terms = tk_label_retrieve_term($xlinks);
       $variables['tk_labels'] = tk_label_render_link_icon($terms);
+    }
+  }
+}
+
+/**
+ * Show Workflow Stamp label to object.
+ */
+function _cwrc_search_add_stamp_labels_to_object($object, &$variables) {
+  if (!empty($object['WORKFLOW'])) {
+    $workflow = $object['WORKFLOW']->content;
+    $stamp = new SimpleXMLElement($workflow);
+    if (!empty($stamp) && !empty($stamp->workflow)) {
+      $categories = array(
+        'published' => array(
+          'class' => 'published',
+          'img_path' => drupal_get_path('theme', 'de_theme') . '/img/unchecked.png'
+        ),
+        'peer-reviewed/evaluated' => array(
+          'class' => 'peer-reviewed',
+          'img_path' => drupal_get_path('theme', 'de_theme') . '/img/unchecked.png'
+        ),
+      );
+      $category = (string) $stamp->workflow[count($stamp->workflow) - 1]->xpath('activity/@category')[0];
+      $status = (string) $stamp->workflow[count($stamp->workflow) - 1]->xpath('activity/@status')[0];
+      if (in_array($category, array_keys($categories)) && $status == 'c') {
+        $variables['wokflow_stamp'] = '<span class="wokflow-stamp '. $categories[$category]['class'] . '"><img src="/' . $categories[$category]['img_path'] . '"></span>';
+      }
     }
   }
 }
