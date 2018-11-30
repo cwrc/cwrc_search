@@ -631,7 +631,7 @@ function _cwrc_search_add_stamp_labels_to_object($object, &$variables) {
         ),
         'peer-reviewed/evaluated' => array(
           'class' => 'peer-reviewed',
-          'img_path' => drupal_get_path('theme', 'de_theme') . '/img/unchecked.png'
+          'img_path' => drupal_get_path('theme', 'de_theme') . '/img/peer-reviewed.png'
         ),
       );
       $category = (string) $stamp->workflow[count($stamp->workflow) - 1]->xpath('activity/@category')[0];
