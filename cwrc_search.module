@@ -316,15 +316,17 @@ function cwrc_search_preprocess_cwrc_search_teaser_grid(&$variables) {
 /**
  * Get the value of attribute from the XML.
  */
-function cwrc_search_get_attributes_from_xml($xml, $tag = 'accessCondition', $attr = 'xlink', $key = 'href') {
+function cwrc_search_get_attributes_from_xml($xml, $tag, $xpath, $namespace_attr = NULL) {
   $values = array();
   $xmlObj = new SimpleXMLElement($xml);
   if (!empty($xmlObj->{$tag})) {
-    foreach ($xmlObj->{$tag} as $element) {
-      $element_attr = $element->attributes($attr, true);
-      if (!empty($element_attr) && !empty($element_attr->{$key})) {
-        $val = (array) $element_attr->{$key};
-        $values[] = array_shift($val);
+    $tk_labels = !empty($xmlObj->{$tag}) ?  $xmlObj->{$tag}->xpath($xpath) : array();
+    foreach ($tk_labels as $element) {
+      if (!empty($namespace_attr)) {
+        $values[] = (string) $element[0];
+      }
+      else {
+        $values[] = (string) $element->{$namespace_attr}[0];
       }
     }
   }
@@ -608,7 +610,7 @@ function cwrc_search_preprocess_islandora_basic_collection_wrapper(&$variables) 
  */
 function _cwrc_search_add_tk_labels_to_object($object, &$variables) {
   if (!empty($object['MODS'])) {
-    $xlinks = cwrc_search_get_attributes_from_xml($object['MODS']->content);
+    $xlinks = cwrc_search_get_attributes_from_xml($object['MODS']->content, 'accessCondition', '//@xlink:href', 'href');
     if (!empty($xlinks)) {
       $terms = tk_label_retrieve_term($xlinks);
       $variables['tk_labels'] = tk_label_render_link_icon($terms);
