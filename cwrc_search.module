@@ -644,3 +644,59 @@ function _cwrc_search_add_stamp_labels_to_object($object, &$variables) {
     }
   }
 }
+
+/**
+ * Get objects associated with this object.
+ *
+ * Currently, we are only concerned with the with isMemberOf and
+ * isMemberOfCollection relationships.
+ *
+ * @param AbstractObject $object
+ *   The collection object whose members will be fetched.
+ * @param string $type
+ *   Either 'view' or 'manage', its meant to repersent how the objects will be
+ *   used.
+ * @param string $cmodel
+ *   The content model in which to explicitly select.
+ *
+ * @return array|bool
+ *   An array containing two values:
+ *   - An integer representing the total number of tuples which can be
+ *     selected with the given parameters.
+ *   - The tuples in the slice according to $page_number and $page_size.
+ *   or boolean FALSE if the query fails.
+ *
+ * @throws \Exception
+ */
+function cwrc_search_get_children_objects(AbstractObject $object, $type = 'view', $cmodel = NULL) {
+  $params = array(
+    'object' => $object,
+  );
+
+  if (isset($cmodel)) {
+    $params['model'] = "<info:fedora/$cmodel>";
+  }
+  $query_array = islandora_basic_collection_get_query_info($params, $type);
+  try {
+    $is_itql = strcasecmp('itql', $query_array['type']) === 0;
+
+    if ($is_itql) {
+      // Add in the final semi-colon.
+      $query_array['query'] .= ';';
+    }
+
+    $results = $object->repository->ri->query($query_array['query'], $query_array['type']);
+  }
+  catch (Exception $e) {
+    $variables = array(
+      '@message' => $e->getMessage(),
+      '@stack' => $e->getTraceAsString(),
+    );
+    watchdog('islandora_basic_collection',
+      'Islandora basic collection failed to retrieve associated objects.<br/>Error:<br/>@message<br/>Stack: <br/>@stack',
+      $variables,
+      WATCHDOG_ERROR);
+    return FALSE;
+  }
+  return $results;
+}
