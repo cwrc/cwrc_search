@@ -316,19 +316,18 @@ function cwrc_search_preprocess_cwrc_search_teaser_grid(&$variables) {
 /**
  * Get the value of attribute from the XML.
  */
-function cwrc_search_get_attributes_from_xml($xml, $tag, $xpath, $namespace_attr = NULL) {
+function cwrc_search_get_attributes_from_xml($xml, $query, $attribute) {
   $values = array();
-  $xmlObj = new SimpleXMLElement($xml);
-  $elements = $xmlObj->xpath($tag);
-  if (!empty($elements)) {
-    foreach ($elements as $element) {
-      $value = $element->xpath($xpath);
-      if (!empty($namespace_attr)) {
-        $values[] = (string) $value[0];
-      }
-      else {
-        $values[] = (string) $value->{$namespace_attr}[0];
-      }
+
+  $namespace = 'http://www.loc.gov/mods/v3';
+  $doc = new DOMDocument();
+  $doc->loadXML($xml);
+  $xpath = new DOMXPath($doc);
+  $xpath->registerNamespace('mods', $namespace);
+  $results = $xpath->query($query);
+  if ($results->length != 0) {
+    foreach ($results as $result) {
+      $values[] = $result->getAttribute($attribute);
     }
   }
 
@@ -611,7 +610,7 @@ function cwrc_search_preprocess_islandora_basic_collection_wrapper(&$variables) 
  */
 function _cwrc_search_add_tk_labels_to_object($object, &$variables) {
   if (!empty($object['MODS'])) {
-    $xlinks = cwrc_search_get_attributes_from_xml($object['MODS']->content, '//mods:accessCondition[not(@displayLabel="inherited")]', '@xlink:href', 'href');
+    $xlinks = cwrc_search_get_attributes_from_xml($object['MODS']->content, '//mods:accessCondition[not(@displayLabel="inherited")]', 'xlink:href');
     if (!empty($xlinks)) {
       $terms = tk_label_retrieve_term($xlinks);
       $variables['tk_labels'] = tk_label_render_link_icon($terms);
