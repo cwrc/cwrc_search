@@ -611,7 +611,7 @@ function cwrc_search_preprocess_islandora_basic_collection_wrapper(&$variables) 
  */
 function _cwrc_search_add_tk_labels_to_object($object, &$variables) {
   if (!empty($object['MODS'])) {
-    $xlinks = cwrc_search_get_attributes_from_xml($object['MODS']->content, '//mods:accessCondition[not(@displayLabel)]', '@xlink:href', 'href');
+    $xlinks = cwrc_search_get_attributes_from_xml($object['MODS']->content, '//mods:accessCondition[not(@displayLabel="inherited")]', '@xlink:href', 'href');
     if (!empty($xlinks)) {
       $terms = tk_label_retrieve_term($xlinks);
       $variables['tk_labels'] = tk_label_render_link_icon($terms);
