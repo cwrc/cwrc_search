@@ -31,7 +31,19 @@
         </a>
       </div>
     <?php } ?>
+      <div class="icon-wrapper">
+      <?php if (!empty($tk_labels)): ?>
+        <div class="tk-label-items">
+          <?php print $tk_labels; ?>
+        </div>
+      <?php endif; ?>
 
+      <?php if (!empty($wokflow_stamp)): ?>
+        <div class="object-workflow-stamp">
+          <?php print $wokflow_stamp; ?>
+        </div>
+      <?php endif; ?>
+      </div>
     <?php if (isset($dc_creator) || isset($dc_date)) { ?>
       <div class="creation-info">
         <div class="creator">
