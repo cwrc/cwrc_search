@@ -28,7 +28,7 @@ function cwrc_search_default_fe_block_settings() {
         'region' => 'sidebar_second',
         'status' => 1,
         'theme' => 'de_theme',
-        'weight' => -35,
+        'weight' => -47,
       ),
     ),
     'title' => 'Save this search',

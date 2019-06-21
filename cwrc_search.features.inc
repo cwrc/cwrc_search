@@ -1947,5 +1947,29 @@ function cwrc_search_islandora_solr_fields_features_default_fields() {
     'weight' => 37,
     'solr_field_settings' => FALSE,
   ),
+  86 => array(
+    'solr_field' => 'RELS_EXT_hasSchema_uri_ms',
+    'field_type' => 'search_fields',
+    'weight' => 38,
+    'solr_field_settings' => array(),
+  ),
+  87 => array(
+    'solr_field' => 'RELS_EXT_hasSchema_uri_mt',
+    'field_type' => 'search_fields',
+    'weight' => 39,
+    'solr_field_settings' => array(),
+  ),
+  88 => array(
+    'solr_field' => 'RELS_EXT_hasSchemaMapping_literal_ms',
+    'field_type' => 'search_fields',
+    'weight' => 40,
+    'solr_field_settings' => array(),
+  ),
+  89 => array(
+    'solr_field' => 'RELS_EXT_hasSchemaMapping_literal_mt',
+    'field_type' => 'search_fields',
+    'weight' => 41,
+    'solr_field_settings' => array(),
+  ),
 );
 }

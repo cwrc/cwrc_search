@@ -44,6 +44,7 @@
         </div>
       <?php endif; ?>
       </div>
+
     <?php if (isset($dc_creator) || isset($dc_date)) { ?>
       <div class="creation-info">
         <div class="creator">
