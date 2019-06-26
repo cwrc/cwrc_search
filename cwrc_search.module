@@ -86,6 +86,7 @@ function cwrc_search_theme($existing, $type, $theme, $path) {
       'variables' => [
         'object' => NULL,
         'object_url' => NULL,
+        'not_collection' => TRUE,
         'cmodel_label' => NULL,
         'cmodel_class' => NULL,
         'thumbnail' => NULL,
@@ -118,6 +119,7 @@ function cwrc_search_theme($existing, $type, $theme, $path) {
       ],
     ],
   ];
+
 }
 
 /**
@@ -340,7 +342,7 @@ function cwrc_search_preprocess_cwrc_search_teaser(&$variables) {
   if(module_exists("tk_label")) {
     // Add TK and Workflow stamp labels.
     $variables['tk_labels'] = '';
-    _tk_label_add_tk_labels_to_object($object, $variables['tk_labels']);
+    _tk_label_add_tk_labels_to_object($object, $variables['tk_labels'], $variables['not_collection']);
 
     $variables['wokflow_stamp'] = '';
     _tk_label_add_stamp_labels_to_object($object, $variables['wokflow_stamp']);
@@ -592,7 +594,7 @@ function cwrc_search_preprocess_islandora_basic_collection_wrapper(&$variables) 
     // Add TK and Workflow stamp labels.
       // Show TK label to object.
     $variables['tk_labels'] = '';
-    _tk_label_add_tk_labels_to_object($object, $variables['tk_labels']);
+    _tk_label_add_tk_labels_to_object($object, $variables['tk_labels'], true);
 
     // Show Workflow Stamp label to object.
     $variables['wokflow_stamp'] = '';
