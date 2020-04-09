@@ -324,7 +324,7 @@ function cwrc_search_preprocess_cwrc_search_teaser_grid(&$variables) {
  */
 function cwrc_search_preprocess_cwrc_search_teaser(&$variables) {
   global $language;
-
+// watchdog('bradmodule', '<pre>Dumping @variable </pre>', array('@variable' => print_r($variables, true)));
   // Attempt to load the object from PID.
   if (!is_object($variables['object']) && is_scalar($variables['object'])) {
     $variables['object'] = islandora_object_load($variables['object']);
@@ -342,8 +342,14 @@ function cwrc_search_preprocess_cwrc_search_teaser(&$variables) {
   if(module_exists("tk_label")) {
     // Add TK and Workflow stamp labels.
     $variables['tk_labels'] = '';
-    _tk_label_add_tk_labels_to_object($object, $variables['tk_labels'], $variables['not_collection']);
-
+    if( drupal_match_path(current_path(), 'islandora/search/*')) {
+      
+    _tk_label_add_tk_labels_to_object($object, $variables['tk_labels'], true);
+    } else {
+            
+    _tk_label_add_tk_labels_to_object($object, $variables['tk_labels'], false);
+    }
+ 
     $variables['wokflow_stamp'] = '';
     _tk_label_add_stamp_labels_to_object($object, $variables['wokflow_stamp']);
 
@@ -594,7 +600,9 @@ function cwrc_search_preprocess_islandora_basic_collection_wrapper(&$variables) 
     // Add TK and Workflow stamp labels.
       // Show TK label to object.
     $variables['tk_labels'] = '';
+    
     _tk_label_add_tk_labels_to_object($object, $variables['tk_labels'], true);
+    
 
     // Show Workflow Stamp label to object.
     $variables['wokflow_stamp'] = '';
